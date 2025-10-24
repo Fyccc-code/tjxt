@@ -95,10 +95,10 @@ public class RefundApplyServiceImpl extends ServiceImpl<RefundApplyMapper, Refun
         }
         // 2.查询订单
         Order order = orderMapper.getById(detail.getOrderId());
-        if(order == null){
+        if (order == null) {
             throw new BadRequestException(TradeErrorInfo.ORDER_NOT_EXISTS);
         }
-        if(!(OrderStatus.PAYED.equalsValue(order.getStatus()) || OrderStatus.REFUNDED.equalsValue(order.getStatus()))){
+        if (!(OrderStatus.PAYED.equalsValue(order.getStatus()) || OrderStatus.REFUNDED.equalsValue(order.getStatus()))) {
             // 订单状态未支付或已经完结，不能退款
             throw new BizIllegalException(TradeErrorInfo.ORDER_CANNOT_REFUND);
         }
@@ -161,7 +161,7 @@ public class RefundApplyServiceImpl extends ServiceImpl<RefundApplyMapper, Refun
         d.setRefundStatus(refundApply.getStatus());
         detailService.updateById(d);
         // 9.如果是管理员申请的，立刻异步发送退款请求
-        if(!isStudent) {
+        if (!isStudent) {
             sendRefundRequestAsync(refundApply);
         }
     }
@@ -339,7 +339,7 @@ public class RefundApplyServiceImpl extends ServiceImpl<RefundApplyMapper, Refun
         detailService.updateRefundStatusById(apply.getOrderDetailId(), r.getStatus());
 
         // 5.异步发送退款请求
-        if(agree) {
+        if (agree) {
             sendRefundRequestAsync(apply);
         }
     }
@@ -417,18 +417,18 @@ public class RefundApplyServiceImpl extends ServiceImpl<RefundApplyMapper, Refun
         r.setRefundOrderNo(result.getRefundOrderNo());
         // 2.1.判断状态是否退款中
         int status = result.getStatus();
-        if(status == RefundResultDTO.RUNNING){
+        if (status == RefundResultDTO.RUNNING) {
             // 退款中，结果未知，将其它数据写入数据库即可
             updateById(r);
             return;
         }
 
         // 2.2.判断退款成功还是失败
-        if(status == RefundResultDTO.SUCCESS){
+        if (status == RefundResultDTO.SUCCESS) {
             // 退款成功，记录状态
             r.setStatus(RefundStatus.SUCCESS.getValue());
             r.setMessage(RefundStatus.SUCCESS.getProgressName());
-        }else {
+        } else {
             // 2.3.退款失败，需要记录状态及退款失败原因
             r.setStatus(RefundStatus.FAILED.getValue());
             r.setMessage(RefundStatus.FAILED.getProgressName());
@@ -489,7 +489,7 @@ public class RefundApplyServiceImpl extends ServiceImpl<RefundApplyMapper, Refun
     public boolean checkRefundStatus(RefundApply refundApply) {
         // 1.先检查是否已经退款成功
         Integer status = refundApply.getStatus();
-        if(!AGREE.equalsValue(status)){
+        if (!AGREE.equalsValue(status)) {
             return true;
         }
         // 2.远程查询，判断是否已经退款成功
