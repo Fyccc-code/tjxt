@@ -24,7 +24,7 @@ public enum LessonStatus implements BaseEnum {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static LessonStatus of(Integer value){
+    public static LessonStatus of(Integer value) {
         if (value == null) {
             return null;
         }
