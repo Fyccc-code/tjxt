@@ -276,6 +276,7 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
                 .page(query.toMpPage("latest_learn_time", false));
         List<LearningLesson> records = p.getRecords();
         if (CollUtils.isEmpty(records)) {
+            //todo 有错误  分页信息错误
             return result.emptyPage(p);
         }
         //4.2.查询课表对应的课程信息

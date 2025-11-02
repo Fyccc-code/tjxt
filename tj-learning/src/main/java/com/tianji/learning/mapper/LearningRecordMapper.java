@@ -20,6 +20,6 @@ public interface LearningRecordMapper extends BaseMapper<LearningRecord> {
 
     List<IdAndNumDTO> countLearnedSections(
             @Param("userId") Long userId,
-            @Param("begin")LocalDateTime begin,
-            @Param("end")LocalDateTime end);
+            @Param("begin") LocalDateTime begin,
+            @Param("end") LocalDateTime end);
 }
