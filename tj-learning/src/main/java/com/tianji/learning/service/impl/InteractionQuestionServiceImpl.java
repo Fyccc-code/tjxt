@@ -74,12 +74,12 @@ public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuest
         }
         //2.分页查询
         Page<InteractionQuestion> page = lambdaQuery()
-                .select(InteractionQuestion.class, info -> !info.getProperty().equals("description"))
+                .select(InteractionQuestion.class, info -> !info.getProperty().equals("description"))//断言prediccate 写个boolean表达式 看那个字段要还是不要
                 .eq(query.getOnlyMine(), InteractionQuestion::getUserId, UserContext.getUser())
                 .eq(courseId != null, InteractionQuestion::getCourseId, courseId)
                 .eq(sectionId != null, InteractionQuestion::getSectionId, sectionId)
                 .eq(InteractionQuestion::getHidden, false)
-                .page(query.toMpPageDefaultSortByCreateTimeDesc());
+                .page(query.toMpPageDefaultSortByCreateTimeDesc());//按照创建时间默认排序
         List<InteractionQuestion> records = page.getRecords();
         if (CollUtils.isEmpty(records)) {
             return PageDTO.empty(page);
@@ -106,14 +106,14 @@ public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuest
                 }
             }
         }
-
         //3.3.根据id查询用户信息（提问者）
         userIds.remove(null);
         Map<Long, UserDTO> userMap = new HashMap<>(userIds.size());
         if (CollUtils.isNotEmpty(userIds)) {
             List<UserDTO> users = userClient.queryUserByIds(userIds);
             userMap = users.stream()
-                    .collect(Collectors.toMap(user -> user.getId(), u -> u));
+                    //user -> user.getId() key就是userId lambda表达式替换成方法引用
+                    .collect(Collectors.toMap(UserDTO::getId, u -> u));
         }
         //4.封装VO
         //4.1.将PO转为VO
@@ -125,6 +125,7 @@ public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuest
             if (!r.getAnonymity()) {
                 UserDTO userDTO = userMap.get(r.getUserId());
                 if (userDTO != null) {
+                    //健壮性判断
                     vo.setUserName(userDTO.getName());
                     vo.setUserIcon(userDTO.getIcon());
                 }

@@ -1,6 +1,5 @@
 package com.tianji.common.domain.dto;
 
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tianji.common.utils.BeanUtils;
