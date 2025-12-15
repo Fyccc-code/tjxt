@@ -2,7 +2,6 @@ package com.tianji.learning.utils;
 
 import com.tianji.common.utils.JsonUtils;
 import com.tianji.common.utils.StringUtils;
-import com.tianji.common.utils.UserContext;
 import com.tianji.learning.domain.po.LearningLesson;
 import com.tianji.learning.domain.po.LearningRecord;
 import com.tianji.learning.mapper.LearningRecordMapper;
@@ -37,10 +36,12 @@ public class LearningRecordDelayTaskHandler {
     private final ILearningLessonService lessonService;
     private final DelayQueue<DelayTask<RecordTaskData>> queue = new DelayQueue<>();
     private final static String RECORD_KEY_TEMPLATE = "learning:record:{}";
+    //volatile 防止已修改了其他线程不可见的情况
     private static volatile boolean begin = true;
 
     @PostConstruct
     public void init() {
+        //单线程方案
         CompletableFuture.runAsync(this::handleDelayTask);
     }
 
@@ -102,7 +103,7 @@ public class LearningRecordDelayTaskHandler {
             redisTemplate.expire(key, Duration.ofMinutes(1));
         } catch (Exception e) {
             log.error("更新学习记录缓存异常", e);
-            Long user = UserContext.getUser();
+            //Long user = UserContext.getUser();
         }
     }
 
@@ -111,11 +112,12 @@ public class LearningRecordDelayTaskHandler {
             // 1.读取Redis数据
             String key = StringUtils.format(RECORD_KEY_TEMPLATE, lessonId);
             Object cacheData = redisTemplate.opsForHash().get(key, sectionId.toString());
-            if (cacheData == null) {
+            /*if (cacheData == null) {
                 return null;
             }
             // 2.数据检查和转换
-            return JsonUtils.toBean(cacheData.toString(), LearningRecord.class);
+            return JsonUtils.toBean(cacheData.toString(), LearningRecord.class);*/
+            return cacheData == null ? null : JsonUtils.toBean(cacheData.toString(), LearningRecord.class);
         } catch (Exception e) {
             log.error("缓存读取异常", e);
             return null;

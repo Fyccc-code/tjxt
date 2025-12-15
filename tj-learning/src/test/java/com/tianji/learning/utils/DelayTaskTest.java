@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.concurrent.DelayQueue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author Fyc
  * @since 2025-10-26 15:05:13
@@ -18,8 +16,10 @@ class DelayTaskTest {
 
     @Test
     void testDelayQueue() throws InterruptedException {
+        //初始化延迟队列
         DelayQueue<DelayTask<String>> queue = new DelayQueue<>();
         log.info("开始初始化延迟任务。。。");
+        //添加延迟执行的任务
         queue.add(new DelayTask<>("延迟任务3", Duration.ofSeconds(3)));
         queue.add(new DelayTask<>("延迟任务2", Duration.ofSeconds(2)));
         queue.add(new DelayTask<>("延迟任务1", Duration.ofSeconds(1)));

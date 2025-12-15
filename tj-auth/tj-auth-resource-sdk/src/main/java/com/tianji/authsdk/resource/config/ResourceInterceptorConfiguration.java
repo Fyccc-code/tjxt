@@ -26,18 +26,18 @@ public class ResourceInterceptorConfiguration implements WebMvcConfigurer {
         // 1.添加用户信息拦截器
         registry.addInterceptor(new UserInfoInterceptor()).order(0);
         // 2.是否需要做登录拦截
-        if(!authProperties.getEnable()){
+        if (!authProperties.getEnable()) {
             // 无需登录拦截
             return;
         }
         // 2.添加登录拦截器
         InterceptorRegistration registration = registry.addInterceptor(new LoginAuthInterceptor()).order(1);
         // 2.1.添加拦截器路径
-        if(CollUtil.isNotEmpty(authProperties.getIncludeLoginPaths())){
+        if (CollUtil.isNotEmpty(authProperties.getIncludeLoginPaths())) {
             registration.addPathPatterns(authProperties.getIncludeLoginPaths());
         }
         // 2.2.添加排除路径
-        if(CollUtil.isNotEmpty(authProperties.getExcludeLoginPaths())){
+        if (CollUtil.isNotEmpty(authProperties.getExcludeLoginPaths())) {
             registration.excludePathPatterns(authProperties.getExcludeLoginPaths());
         }
         // 2.3.排除swagger路径

@@ -3,6 +3,7 @@ package com.tianji.learning.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tianji.api.client.course.CatalogueClient;
 import com.tianji.api.client.course.CourseClient;
 import com.tianji.api.dto.IdAndNumDTO;
@@ -23,7 +24,6 @@ import com.tianji.learning.enums.PlanStatus;
 import com.tianji.learning.mapper.LearningLessonMapper;
 import com.tianji.learning.mapper.LearningRecordMapper;
 import com.tianji.learning.service.ILearningLessonService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -277,7 +277,8 @@ public class LearningLessonServiceImpl extends ServiceImpl<LearningLessonMapper,
         List<LearningLesson> records = p.getRecords();
         if (CollUtils.isEmpty(records)) {
             //todo 有错误  分页信息错误
-            //return result.emptyPage(p);
+            return new LearningPlanPageVO();
+            // return result.emptyPage(p);
         }
         //4.2.查询课表对应的课程信息
         Map<Long, CourseSimpleInfoDTO> cMap = queryCourseSimpleInfoList(records);

@@ -71,8 +71,9 @@ public class LockAspect {
 
     /**
      * 解析锁名称
+     *
      * @param name 原始锁名称
-     * @param pjp 切入点
+     * @param pjp  切入点
      * @return 解析后的锁名称
      */
     private String getLockName(String name, ProceedingJoinPoint pjp) {
@@ -101,7 +102,7 @@ public class LockAspect {
 
     private Method resolveMethod(ProceedingJoinPoint pjp) {
         // 1.获取方法签名
-        MethodSignature signature = (MethodSignature)pjp.getSignature();
+        MethodSignature signature = (MethodSignature) pjp.getSignature();
         // 2.获取字节码
         Class<?> clazz = pjp.getTarget().getClass();
         // 3.方法名称
@@ -111,7 +112,7 @@ public class LockAspect {
         return tryGetDeclaredMethod(clazz, name, parameterTypes);
     }
 
-    private Method tryGetDeclaredMethod(Class<?> clazz, String name, Class<?> ... parameterTypes){
+    private Method tryGetDeclaredMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
         try {
             // 5.反射获取方法
             return clazz.getDeclaredMethod(name, parameterTypes);
