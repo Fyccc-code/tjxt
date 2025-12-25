@@ -88,6 +88,7 @@ public class DiscountServiceImpl implements IDiscountService {
         try {
             latch.await(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
+            //打断原因可能超时
             log.error("优惠方案计算被中断，{}", e.getMessage());
         }
         // 5.筛选最优解
@@ -148,7 +149,6 @@ public class DiscountServiceImpl implements IDiscountService {
                 // 券不可用，跳过
                 continue;
             }
-
             // 3.4.计算优惠金额
             int discountAmount = discount.calculateDiscount(totalAmount, coupon);
             // 3.5.计算优惠明细
@@ -161,8 +161,8 @@ public class DiscountServiceImpl implements IDiscountService {
         return dto;
     }
 
-    private void calculateDiscountDetails(Map<Long, Integer> detailMap, List<OrderCourseDTO> courses,
-                                          int totalAmount, int discountAmount) {
+    private void calculateDiscountDetails(
+            Map<Long, Integer> detailMap, List<OrderCourseDTO> courses, int totalAmount, int discountAmount) {
         int times = 0;
         int remainDiscount = discountAmount;
         for (OrderCourseDTO course : courses) {
@@ -192,7 +192,7 @@ public class DiscountServiceImpl implements IDiscountService {
             if (coupon.getSpecific()) {
                 // 1.1.限定了范围，查询券的可用范围
                 List<CouponScope> scopes = scopeService.lambdaQuery().eq(CouponScope::getCouponId, coupon.getId()).list();
-                // 1.2.获取范围对应的分类id
+                // 1.2.获取范围对应的分类id 转成set set用的hashcode equals判断效率更高
                 Set<Long> scopeIds = scopes.stream().map(CouponScope::getBizId).collect(Collectors.toSet());
                 // 1.3.筛选课程
                 availableCourses = courses.stream()
