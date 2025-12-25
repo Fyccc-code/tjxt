@@ -29,7 +29,7 @@ public class PromotionConfig {
         executor.setThreadNamePrefix("exchange-code-handle-");
         //拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        //初始化
+        //线程池初始化
         executor.initialize();
         return executor;
     }
@@ -52,6 +52,7 @@ public class PromotionConfig {
         executor.setThreadNamePrefix("discount-solution-calculator-");
         // 5.拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        //线程池初始化
         executor.initialize();
         return executor;
     }
