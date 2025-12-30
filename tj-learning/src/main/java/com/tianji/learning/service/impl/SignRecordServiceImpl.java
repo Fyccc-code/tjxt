@@ -54,27 +54,27 @@ public class SignRecordServiceImpl implements ISignRecordService {
         //2.计算连续签到天数
         int signDays = countSignDays(key, now.getDayOfMonth());
         //3.计算签到积分
-        int rewardsPoints = 0;
+        int rewardPoints = 0;
         switch (signDays) {
             case 7:
-                rewardsPoints = 10;
+                rewardPoints = 10;
                 break;
             case 14:
-                rewardsPoints = 20;
+                rewardPoints = 20;
                 break;
             case 28:
-                rewardsPoints = 40;
+                rewardPoints = 40;
                 break;
         }
         //4.保存积分明细 mq发送消息进行保存积分
         rabbitMqHelper.send(
                 MqConstants.Exchange.LEARNING_EXCHANGE,
                 MqConstants.Key.SIGN_IN,
-                SignInMessage.of(userId, rewardsPoints + 1));
+                SignInMessage.of(userId, rewardPoints + 1));
         //5.封装结果返回
         SignResultVO signResultVO = new SignResultVO();
         signResultVO.setSignDays(signDays);
-        signResultVO.setRewardPoints(rewardsPoints);
+        signResultVO.setRewardPoints(rewardPoints);
         return signResultVO;
     }
 

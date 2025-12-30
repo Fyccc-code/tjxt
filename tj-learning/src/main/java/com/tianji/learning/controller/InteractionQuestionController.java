@@ -3,15 +3,12 @@ package com.tianji.learning.controller;
 
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.learning.domain.dto.QuestionFormDTO;
-import com.tianji.learning.domain.query.QuestionAdminPageQuery;
 import com.tianji.learning.domain.query.QuestionPageQuery;
-import com.tianji.learning.domain.vo.QuestionAdminVO;
 import com.tianji.learning.domain.vo.QuestionVO;
 import com.tianji.learning.service.IInteractionQuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +27,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Api(tags = "互动问答相关接口")
 public class InteractionQuestionController {
-
 
     private final IInteractionQuestionService questionService;
 

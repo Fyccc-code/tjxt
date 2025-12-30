@@ -1,6 +1,7 @@
 package com.tianji.learning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tianji.common.utils.CollUtils;
 import com.tianji.common.utils.DateUtils;
 import com.tianji.common.utils.UserContext;
@@ -10,7 +11,6 @@ import com.tianji.learning.domain.vo.PointsStatisticsVO;
 import com.tianji.learning.enums.PointsRecordType;
 import com.tianji.learning.mapper.PointsRecordMapper;
 import com.tianji.learning.service.IPointsRecordService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -64,7 +64,7 @@ public class PointsRecordServiceImpl extends ServiceImpl<PointsRecordMapper, Poi
         save(p);
         //4.累积积分数据到Redis的sortedSet中
         String key = RedisConstants.POINTS_BOARD_KEY_PREFIX + now.format(DateUtils.POINTS_BOARD_SUFFIX_FORMATTER);
-        redisTemplate.opsForZSet().add(key, userId.toString(), realPoints);
+        redisTemplate.opsForZSet().incrementScore(key, userId.toString(), realPoints);
     }
 
     @Override

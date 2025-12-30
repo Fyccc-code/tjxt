@@ -51,13 +51,9 @@ import static com.tianji.promotion.enums.CouponStatus.*;
 public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> implements ICouponService {
 
     private final ICouponScopeService couponScopeService;
-
     private final IExchangeCodeService codeService;
-
     private final IUserCouponService userCouponService;
-
     private final CategoryCache categoryCache;
-
     private final StringRedisTemplate redisTemplate;
 
     @Override
@@ -68,7 +64,6 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
         Coupon coupon = BeanUtils.copyBean(dto, Coupon.class);
         //1.2.保存到数据库
         save(coupon);
-
         if (!dto.getSpecific()) {
             //没有范围限定 直接结束
             return;
@@ -201,11 +196,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
             return;
         }
         // 3.更新状态
-        boolean success = lambdaUpdate()
-                .set(Coupon::getStatus, PAUSE)
-                .eq(Coupon::getId, id)
-                .in(Coupon::getStatus, UN_ISSUE, ISSUING)
-                .update();
+        boolean success = lambdaUpdate().set(Coupon::getStatus, PAUSE).eq(Coupon::getId, id).in(Coupon::getStatus, UN_ISSUE, ISSUING).update();
         if (!success) {
             // 可能是重复更新，结束
             log.error("重复暂停优惠券");
