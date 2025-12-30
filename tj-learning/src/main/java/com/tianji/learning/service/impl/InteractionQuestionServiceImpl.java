@@ -52,7 +52,6 @@ public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuest
     private final CatalogueClient catalogueClient;
     private final CategoryCache categoryCache;
 
-
     @Override
     public void saveQuestion(QuestionFormDTO questionDTO) {
         //获取当前登录用户id

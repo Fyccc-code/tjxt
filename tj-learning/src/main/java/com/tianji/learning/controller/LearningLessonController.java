@@ -79,10 +79,9 @@ public class LearningLessonController {
     }
 
     @ApiOperation("查询我的学习计划")
-    @PostMapping("/plans")
+    @GetMapping("/plans")
     public LearningPlanPageVO queryMyPlans(PageQuery query) {
         return lessonService.queryMyPlans(query);
     }
-
-
+    
 }

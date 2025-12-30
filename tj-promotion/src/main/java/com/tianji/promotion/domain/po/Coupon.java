@@ -1,19 +1,18 @@
 package com.tianji.promotion.domain.po;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianji.promotion.enums.CouponStatus;
 import com.tianji.promotion.enums.DiscountType;
 import com.tianji.promotion.enums.ObtainType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -40,7 +39,7 @@ public class Coupon implements Serializable {
     /**
      * 优惠券名称，可以和活动名称保持一致
      */
-    @TableField("'name'")
+    @TableField("`name`")
     private String name;
 
     /**
@@ -56,7 +55,7 @@ public class Coupon implements Serializable {
     /**
      * 是否限定作用范围，false：不限定，true：限定。默认false
      */
-    @TableField("'specific'") //数据库关键字 加单引号解决
+    @TableField("`specific`") //数据库关键字 加转义字符
     private Boolean specific;
 
     /**

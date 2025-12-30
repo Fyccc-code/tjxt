@@ -13,7 +13,6 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -64,13 +63,18 @@ public class PointsBoardPersistentHandler {
         //2.1拼接key
         String key = RedisConstants.POINTS_BOARD_KEY_PREFIX + time.format(DateUtils.POINTS_BOARD_SUFFIX_FORMATTER);
         //查询数据
+        //分片 第几片 分片起始页码就是数据分片的编号
         int index = XxlJobHelper.getShardIndex();
+        //总共有几片 分页跨度就是分片的总数量
         int total = XxlJobHelper.getShardTotal();
         int pageNo = index + 1;
         int pageSize = 100;
+        //循环查数据库并且持久化
         while (true) {
+            //数据可能比较多 带宽 调用service分页查询
             List<PointsBoard> list = pointsBoardService.queryCurrentBoardList(key, pageNo, pageSize);
             if (CollUtils.isEmpty(list)) {
+                //查出来为空 跳出循环
                 break;
             }
             //4.持久化到数据库
@@ -97,7 +101,7 @@ public class PointsBoardPersistentHandler {
         LocalDateTime time = LocalDateTime.now().minusDays(1);
         //拼接key
         String key = RedisConstants.POINTS_BOARD_KEY_PREFIX + time.format(DateUtils.POINTS_BOARD_SUFFIX_FORMATTER);
-        //删除key
+        //删除key unlink异步删除 开启单独的线程去删除 防止主线程阻塞
         redisTemplate.unlink(key);
     }
 }

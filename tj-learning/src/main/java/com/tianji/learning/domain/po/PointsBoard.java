@@ -1,12 +1,13 @@
 package com.tianji.learning.domain.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ public class PointsBoard implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 榜单id
+     * 榜单id 自己控制id 用input手动输入方式而不用auto
      */
     @TableId(value = "id", type = IdType.INPUT)
     private Long id;

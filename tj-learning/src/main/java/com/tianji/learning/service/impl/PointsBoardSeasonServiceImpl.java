@@ -1,9 +1,9 @@
 package com.tianji.learning.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tianji.learning.domain.po.PointsBoardSeason;
 import com.tianji.learning.mapper.PointsBoardSeasonMapper;
 import com.tianji.learning.service.IPointsBoardSeasonService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,9 +24,9 @@ public class PointsBoardSeasonServiceImpl extends ServiceImpl<PointsBoardSeasonM
     public Integer querySeasonByTime(LocalDateTime time) {
         //查询赛季id
         Optional<PointsBoardSeason> optional = lambdaQuery()
-                .le(PointsBoardSeason::getBeginTime, time) //< =
+                .le(PointsBoardSeason::getBeginTime, time) //<=
                 .ge(PointsBoardSeason::getEndTime, time) //>=
-                .oneOpt(); //可能有可能没有
+                .oneOpt();
         //返回赛季id
         return optional.map(PointsBoardSeason::getId).orElse(null);
     }
