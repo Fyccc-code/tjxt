@@ -15,6 +15,7 @@ import static com.tianji.promotion.utils.MyLockType.*;
  * @since 2025/11/22 20:43:28
  */
 @Component
+//@RequiredArgsConstructor
 public class MyLockFactory {
 
     //private final RedissonClient redissonClient;
@@ -24,6 +25,7 @@ public class MyLockFactory {
     public MyLockFactory(RedissonClient redissonClient) {
         //this.redissonClient = redissonClient;
         //不需要做哈希运算 简化get逻辑 提升性能
+        // this.lockHandlers = new EnumMap<MyLockType, Function<String, RLock>>(MyLockType.class);
         this.lockHandlers = new EnumMap<>(MyLockType.class);
         this.lockHandlers.put(RE_ENTRANT_LOCK, redissonClient::getLock);
         this.lockHandlers.put(FAIR_LOCK, redissonClient::getFairLock);

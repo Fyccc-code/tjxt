@@ -1,5 +1,6 @@
 package com.tianji.promotion.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tianji.api.cache.CategoryCache;
@@ -119,10 +120,10 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
         Coupon c = BeanUtils.copyProperties(dto, coupon.getClass());
         //4.2.更新状态
         if (isBegin) {
-            c.setStatus(ISSUING);
+            c.setStatus(CouponStatus.ISSUING);
             c.setIssueBeginTime(now);
         } else {
-            c.setStatus(UN_ISSUE);
+            c.setStatus(CouponStatus.UN_ISSUE);
         }
         //4.3.写入数据库
         updateById(c);
@@ -143,6 +144,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
     private void cacheCouponInfo(Coupon coupon) {
         // 1.组织数据
         Map<String, String> map = new HashMap<>(4);
+        //toString转过去的结构不一定是想要的 存从1970年的毫秒值
         map.put("issueBeginTime", String.valueOf(DateUtils.toEpochMilli(coupon.getIssueBeginTime())));
         map.put("issueEndTime", String.valueOf(DateUtils.toEpochMilli(coupon.getIssueEndTime())));
         map.put("totalNum", String.valueOf(coupon.getTotalNum()));
@@ -207,6 +209,17 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 
     @Override
     public void deleteById(Long id) {
-
+        //1.查询
+        Coupon coupon = getById(id);
+        if (coupon == null || coupon.getStatus() != CouponStatus.DRAFT) {
+            throw new BadRequestException("优惠券不存在或者优惠券正在使用中");
+        }
+        //2.删除
+        boolean success = remove(new LambdaQueryWrapper<Coupon>()
+                .eq(Coupon::getId, id)
+                .eq(Coupon::getStatus, CouponStatus.DRAFT));
+        if (!success) {
+            throw new BadRequestException("删除优惠券失败");
+        }
     }
 }
