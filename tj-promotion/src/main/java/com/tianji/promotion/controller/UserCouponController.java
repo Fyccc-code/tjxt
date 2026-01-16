@@ -32,7 +32,7 @@ public class UserCouponController {
 
     @PostMapping("/{couponId}/receive")
     @ApiOperation("领取优惠券接口")
-    public void receiveCoupon(@PathVariable Long couponId) {
+    public void receiveCoupon(@PathVariable("couponId") Long couponId) {
         userCouponService.receiveCoupon(couponId);
     }
 

@@ -23,7 +23,7 @@ public class MyLockAspect implements Ordered {
     public Object tryLock(ProceedingJoinPoint pjp, MyLock myLock) throws Throwable {
         // 1.创建锁对象
         RLock lock = lockFactory.getLock(myLock.type(), myLock.name());
-        // 2.尝试获取锁
+        // 2.尝试获取锁 不同的策略
         boolean isLock = myLock.strategy().tryLock(lock, myLock);
         // 3.判断是否成功
         if (!isLock) {
@@ -41,6 +41,7 @@ public class MyLockAspect implements Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        //return 0;
+        return Ordered.LOWEST_PRECEDENCE;
     }
 }

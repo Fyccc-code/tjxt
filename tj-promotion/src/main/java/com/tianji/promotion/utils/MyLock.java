@@ -13,11 +13,13 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface MyLock {
+    //不能为空 一定得有
     String name();
 
+    //等待时间
     long waitTime() default 1;
 
-    //锁超时施放时间
+    //锁超时施放时间 Redisson底层看门狗 在-1才生效
     long leaseTime() default -1;
 
     TimeUnit unit() default TimeUnit.SECONDS;
