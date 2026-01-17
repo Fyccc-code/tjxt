@@ -33,7 +33,7 @@ public class CommonExceptionAdvice {
 
     @ExceptionHandler(CommonException.class)
     public Object handleBadRequestException(CommonException e) {
-        log.error("自定义异常 -> {} , 状态码：{}, 异常原因：{}  ",e.getClass().getName(), e.getStatus(), e.getMessage());
+        log.error("自定义异常 -> {} , 状态码：{}, 异常原因：{}  ", e.getClass().getName(), e.getStatus(), e.getMessage());
         log.debug("", e);
         return processResponse(e.getStatus(), e.getCode(), e.getMessage());
     }
@@ -53,6 +53,7 @@ public class CommonExceptionAdvice {
         log.debug("", e);
         return processResponse(400, 400, msg);
     }
+
     @ExceptionHandler(BindException.class)
     public Object handleBindException(BindException e) {
         log.error("请求参数绑定异常 ->BindException， {}", e.getMessage());
@@ -71,9 +72,9 @@ public class CommonExceptionAdvice {
     public Object handViolationException(ConstraintViolationException e) {
         log.error("请求参数异常 -> ConstraintViolationException, {}", e.getMessage());
 
-        return processResponse( HttpStatus.OK.value(), HttpStatus.BAD_REQUEST.value(),
+        return processResponse(HttpStatus.OK.value(), HttpStatus.BAD_REQUEST.value(),
                 e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).distinct().collect(Collectors.joining("|"))
-                );
+        );
     }
 
     @ExceptionHandler(Exception.class)
@@ -82,7 +83,7 @@ public class CommonExceptionAdvice {
         return processResponse(500, 500, "服务器内部异常");
     }
 
-    private Object processResponse(int status, int code, String msg){
+    private Object processResponse(int status, int code, String msg) {
         // 1.标记响应异常已处理（避免重复处理）
         WebUtils.setResponseHeader(Constant.BODY_PROCESSED_MARK_HEADER, "true");
         // 2.如果是网关请求，http状态码修改为200返回，前端基于业务状态码code来判断状态

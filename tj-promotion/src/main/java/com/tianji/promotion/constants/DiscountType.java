@@ -10,29 +10,45 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum DiscountType implements BaseEnum {
     PER_PRICE_DISCOUNT(1, "每满减") {
-        @Override
+        /*@Override
         public Discount getDiscount(Coupon coupon) {
             return new PerPriceDiscount(
                     coupon.getDiscountValue(), coupon.getThresholdAmount(), coupon.getMaxDiscountAmount());
+        }*/
+        @Override
+        public Discount getDiscount(Coupon coupon) {
+            return new PerPriceDiscount();
         }
     },
     RATE_DISCOUNT(2, "折扣") {
-        @Override
+        /*@Override
         public Discount getDiscount(Coupon coupon) {
             return new RateDiscount(
                     coupon.getDiscountValue(), coupon.getThresholdAmount(), coupon.getMaxDiscountAmount());
+        }*/
+        @Override
+        public Discount getDiscount(Coupon coupon) {
+            return new RateDiscount();
         }
     },
     NO_THRESHOLD(3, "无门槛") {
-        @Override
+        /*@Override
         public Discount getDiscount(Coupon coupon) {
             return new NoThresholdDiscount(coupon.getDiscountValue());
+        }*/
+        @Override
+        public Discount getDiscount(Coupon coupon) {
+            return new NoThresholdDiscount();
         }
     },
     PRICE_DISCOUNT(4, "满减") {
-        @Override
+        /*@Override
         public Discount getDiscount(Coupon coupon) {
             return new PriceDiscount(coupon.getDiscountValue(), coupon.getThresholdAmount());
+        }*/
+        @Override
+        public Discount getDiscount(Coupon coupon) {
+            return new PriceDiscount();
         }
     },
     ;

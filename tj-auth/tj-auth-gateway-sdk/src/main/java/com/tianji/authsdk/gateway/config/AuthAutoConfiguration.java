@@ -13,12 +13,12 @@ public class AuthAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(DiscoveryClient.class)
-    public JwtSignerHolder jwtSignerHolder(DiscoveryClient discoveryClient){
+    public JwtSignerHolder jwtSignerHolder(DiscoveryClient discoveryClient) {
         return new JwtSignerHolder(discoveryClient);
     }
 
     @Bean
-    public AuthUtil authUtil(JwtSignerHolder jwtSignerHolder, StringRedisTemplate stringRedisTemplate){
+    public AuthUtil authUtil(JwtSignerHolder jwtSignerHolder, StringRedisTemplate stringRedisTemplate) {
         return new AuthUtil(jwtSignerHolder, stringRedisTemplate);
     }
 }

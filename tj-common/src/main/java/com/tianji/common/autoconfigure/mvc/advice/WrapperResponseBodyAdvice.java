@@ -25,13 +25,13 @@ public class WrapperResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType,
             @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
             @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
-        if (request.getURI().getPath().equals("/v2/api-docs")){
+        if (request.getURI().getPath().equals("/v2/api-docs")) {
             return body;
         }
         if (body == null) {
             return R.ok().requestId(MDC.get(Constant.REQUEST_ID_HEADER));
         }
-        if(body instanceof R){
+        if (body instanceof R) {
             return body;
         }
         return R.ok(body).requestId(MDC.get(Constant.REQUEST_ID_HEADER));

@@ -1,6 +1,5 @@
 package com.tianji.promotion.controller;
 
-
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.promotion.domain.dto.CouponFormDTO;
 import com.tianji.promotion.domain.dto.CouponIssueFormDTO;

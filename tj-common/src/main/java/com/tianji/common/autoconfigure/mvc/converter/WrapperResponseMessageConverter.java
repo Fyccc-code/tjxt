@@ -40,12 +40,12 @@ public class WrapperResponseMessageConverter implements HttpMessageConverter<Obj
 
     @Override
     @NonNull
-    public Object read(@NonNull Class<?> clazz,@NonNull HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    public Object read(@NonNull Class<?> clazz, @NonNull HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         return delegate.read(clazz, inputMessage);
     }
 
     @Override
-    public void write(@NonNull Object o, MediaType contentType,@NonNull HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+    public void write(@NonNull Object o, MediaType contentType, @NonNull HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         delegate.write(o, contentType, outputMessage);
     }
 }

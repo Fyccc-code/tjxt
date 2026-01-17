@@ -1,6 +1,5 @@
 package com.tianji.promotion.config;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,7 @@ public class PromotionConfig {
         return executor;
     }
 
-  /*  @Bean
+    /*@Bean
     public MyLockAspect myLockAspect(RedissonClient redissonClient) {
         return new MyLockAspect(redissonClient);
     }*/
@@ -50,7 +49,7 @@ public class PromotionConfig {
         executor.setQueueCapacity(99999);
         // 4.线程名称
         executor.setThreadNamePrefix("discount-solution-calculator-");
-        // 5.拒绝策略
+        // 5.拒绝策略 直接拒绝 抛出异常
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
         //线程池初始化
         executor.initialize();

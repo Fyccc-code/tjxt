@@ -1,6 +1,5 @@
 package com.tianji.api.client.remark;
 
-
 import com.tianji.api.client.remark.fallback.RemarkClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
