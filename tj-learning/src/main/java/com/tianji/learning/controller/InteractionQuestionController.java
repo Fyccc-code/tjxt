@@ -8,6 +8,7 @@ import com.tianji.learning.domain.vo.QuestionVO;
 import com.tianji.learning.service.IInteractionQuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,14 @@ public class InteractionQuestionController {
         questionService.saveQuestion(questionDTO);
     }
 
+    @ApiOperation("修改提问")
+    @PutMapping("/{id}")
+    public void updateQuestion(
+            @ApiParam("要修改的问题的id") @PathVariable("id") Long id,
+            @RequestBody QuestionFormDTO questionDTO) {
+        questionService.updateQuestion(id, questionDTO);
+    }
+
     @ApiOperation("分页查询互动问题")
     @GetMapping("page")
     public PageDTO<QuestionVO> queryQuestionPageAdmin(QuestionPageQuery query) {
@@ -48,5 +57,11 @@ public class InteractionQuestionController {
         return questionService.queryQuestionById(id);
     }
 
+    @ApiOperation("根据id删除当前用户问题")
+    @DeleteMapping("/{id}")
+    public void deleteQuestion(
+            @ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id) {
+        questionService.deleteById(id);
+    }
 
 }

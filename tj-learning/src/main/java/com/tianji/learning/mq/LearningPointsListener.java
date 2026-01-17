@@ -41,5 +41,31 @@ public class LearningPointsListener {
         recordService.addPointsRecord(message.getUserId(), message.getPoints(), PointsRecordType.SIGN);
     }
 
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(name = "learning.points.queue", durable = "true"),
+            exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
+            key = MqConstants.Key.LEARN_SECTION
+    ))
+    public void listenLearnSectionMessage(Long userId) {
+        recordService.addPointsRecord(userId, 10, PointsRecordType.LEARNING);
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(name = "note.new.points.queue", durable = "true"),
+            exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
+            key = MqConstants.Key.WRITE_NOTE
+    ))
+    public void listenWriteNodeMessage(Long userId) {
+        recordService.addPointsRecord(userId, 3, PointsRecordType.NOTE);
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(name = "note.gathered.points.queue", durable = "true"),
+            exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
+            key = MqConstants.Key.NOTE_GATHERED
+    ))
+    public void listenNodeGatheredMessage(Long userId) {
+        recordService.addPointsRecord(userId, 2, PointsRecordType.NOTE);
+    }
 
 }
