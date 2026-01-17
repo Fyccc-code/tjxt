@@ -15,7 +15,9 @@ import com.tianji.promotion.domain.po.Coupon;
 import com.tianji.promotion.domain.po.CouponScope;
 import com.tianji.promotion.domain.po.UserCoupon;
 import com.tianji.promotion.domain.query.CouponQuery;
+import com.tianji.promotion.domain.vo.CouponDetailVO;
 import com.tianji.promotion.domain.vo.CouponPageVO;
+import com.tianji.promotion.domain.vo.CouponScopeVO;
 import com.tianji.promotion.domain.vo.CouponVO;
 import com.tianji.promotion.enums.CouponStatus;
 import com.tianji.promotion.enums.ObtainType;
@@ -26,6 +28,8 @@ import com.tianji.promotion.service.ICouponService;
 import com.tianji.promotion.service.IExchangeCodeService;
 import com.tianji.promotion.service.IUserCouponService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -209,17 +213,70 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 
     @Override
     public void deleteById(Long id) {
-        //1.查询
+        // 1.查询
         Coupon coupon = getById(id);
-        if (coupon == null || coupon.getStatus() != CouponStatus.DRAFT) {
+        if (coupon == null || coupon.getStatus() != DRAFT) {
             throw new BadRequestException("优惠券不存在或者优惠券正在使用中");
         }
-        //2.删除
+        // 2.删除优惠券
         boolean success = remove(new LambdaQueryWrapper<Coupon>()
                 .eq(Coupon::getId, id)
-                .eq(Coupon::getStatus, CouponStatus.DRAFT));
+                .eq(Coupon::getStatus, DRAFT)
+        );
         if (!success) {
-            throw new BadRequestException("删除优惠券失败");
+            throw new BadRequestException("优惠券不存在或者优惠券正在使用中");
         }
+        // 3.删除优惠券对应限定范围
+        if (!coupon.getSpecific()) {
+            return;
+        }
+        couponScopeService.remove(new LambdaQueryWrapper<CouponScope>().eq(CouponScope::getCouponId, id));
+    }
+
+    @Override
+    public CouponDetailVO queryCouponById(Long id) {
+        // 1.查询优惠券
+        Coupon coupon = getById(id);
+        // 2.转换VO
+        CouponDetailVO vo = BeanUtils.copyBean(coupon, CouponDetailVO.class);
+        if (vo == null || !coupon.getSpecific()) {
+            // 数据不存在，或者没有限定范围，直接结束
+            return vo;
+        }
+        // 3.查询限定范围
+        List<CouponScope> scopes = couponScopeService.lambdaQuery().eq(CouponScope::getCouponId, id).list();
+        if (CollUtils.isEmpty(scopes)) {
+            return vo;
+        }
+        List<CouponScopeVO> scopeVOS = scopes.stream()
+                .map(CouponScope::getBizId)
+                .map(cateId -> new CouponScopeVO(cateId, categoryCache.getNameByLv3Id(cateId)))
+                .collect(Collectors.toList());
+        vo.setScopes(scopeVOS);
+        return vo;
+    }
+
+    @Override
+    public void beginIssueBatch(List<Coupon> coupons) {
+        // 1.更新券状态
+        for (Coupon c : coupons) {
+            c.setStatus(CouponStatus.ISSUING);
+        }
+        updateBatchById(coupons);
+        // 2.批量缓存
+        redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+            StringRedisConnection src = (StringRedisConnection) connection;
+            for (Coupon coupon : coupons) {
+                // 2.1.组织数据
+                Map<String, String> map = new HashMap<>(4);
+                map.put("issueBeginTime", String.valueOf(DateUtils.toEpochMilli(coupon.getIssueBeginTime())));
+                map.put("issueEndTime", String.valueOf(DateUtils.toEpochMilli(coupon.getIssueEndTime())));
+                map.put("totalNum", String.valueOf(coupon.getTotalNum()));
+                map.put("userLimit", String.valueOf(coupon.getUserLimit()));
+                // 2.2.写缓存
+                src.hMSet(PromotionConstants.COUPON_CACHE_KEY_PREFIX + coupon.getId(), map);
+            }
+            return null;
+        });
     }
 }
