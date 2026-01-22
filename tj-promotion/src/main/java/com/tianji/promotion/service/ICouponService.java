@@ -6,7 +6,6 @@ import com.tianji.promotion.domain.dto.CouponFormDTO;
 import com.tianji.promotion.domain.dto.CouponIssueFormDTO;
 import com.tianji.promotion.domain.po.Coupon;
 import com.tianji.promotion.domain.query.CouponQuery;
-import com.tianji.promotion.domain.vo.CouponDetailVO;
 import com.tianji.promotion.domain.vo.CouponPageVO;
 import com.tianji.promotion.domain.vo.CouponVO;
 
@@ -33,8 +32,4 @@ public interface ICouponService extends IService<Coupon> {
     void pauseIssue(Long id);
 
     void deleteById(Long id);
-
-    CouponDetailVO queryCouponById(Long id);
-
-    void beginIssueBatch(List<Coupon> coupons);
 }
