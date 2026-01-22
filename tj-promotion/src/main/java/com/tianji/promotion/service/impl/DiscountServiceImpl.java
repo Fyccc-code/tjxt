@@ -1,11 +1,13 @@
 package com.tianji.promotion.service.impl;
 
 import com.tianji.api.dto.promotion.CouponDiscountDTO;
+import com.tianji.api.dto.promotion.OrderCouponDTO;
 import com.tianji.api.dto.promotion.OrderCourseDTO;
 import com.tianji.common.utils.CollUtils;
 import com.tianji.common.utils.UserContext;
 import com.tianji.promotion.domain.po.Coupon;
 import com.tianji.promotion.domain.po.CouponScope;
+import com.tianji.promotion.enums.UserCouponStatus;
 import com.tianji.promotion.mapper.UserCouponMapper;
 import com.tianji.promotion.service.ICouponScopeService;
 import com.tianji.promotion.service.IDiscountService;
@@ -93,6 +95,23 @@ public class DiscountServiceImpl implements IDiscountService {
         }
         // 5.筛选最优解
         return findBestSolution(list);
+    }
+
+    @Override
+    public CouponDiscountDTO queryDiscountDetailByOrder(OrderCouponDTO orderCouponDTO) {
+        // 1.查询用户优惠券
+        List<Long> userCouponIds = orderCouponDTO.getUserCouponIds();
+        List<Coupon> coupons = userCouponMapper.queryCouponByUserCouponIds(userCouponIds, UserCouponStatus.UNUSED);
+        if (CollUtils.isEmpty(coupons)) {
+            return null;
+        }
+        // 2.查询优惠券对应课程
+        Map<Coupon, List<OrderCourseDTO>> availableCouponMap = findAvailableCoupon(coupons, orderCouponDTO.getCourseList());
+        if (CollUtils.isEmpty(availableCouponMap)) {
+            return null;
+        }
+        // 3.查询优惠券规则
+        return calculateSolutionDiscount(availableCouponMap, orderCouponDTO.getCourseList(), coupons);
     }
 
     private List<CouponDiscountDTO> findBestSolution(List<CouponDiscountDTO> list) {
