@@ -29,7 +29,6 @@ import com.tianji.learning.domain.vo.QuestionVO;
 import com.tianji.learning.mapper.InteractionQuestionMapper;
 import com.tianji.learning.mapper.InteractionReplyMapper;
 import com.tianji.learning.service.IInteractionQuestionService;
-import com.tianji.learning.service.IInteractionReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +49,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuestionMapper, InteractionQuestion> implements IInteractionQuestionService {
 
-    private final IInteractionReplyService replyService;
+    //注入mapper 不然循环依赖
+    //private final IInteractionReplyService replyService;
     private final UserClient userClient;
     private final CourseClient courseClient;
     private final SearchClient searchClient;
@@ -103,7 +103,7 @@ public class InteractionQuestionServiceImpl extends ServiceImpl<InteractionQuest
         answerIds.remove(null);
         Map<Long, InteractionReply> replyMap = new HashMap<>(answerIds.size());
         if (CollUtils.isNotEmpty(answerIds)) {
-            List<InteractionReply> replies = replyService.listByIds(answerIds);
+            List<InteractionReply> replies = replyMapper.selectBatchIds(answerIds);
             for (InteractionReply reply : replies) {
                 replyMap.put(reply.getId(), reply);
                 if (!reply.getAnonymity()) {

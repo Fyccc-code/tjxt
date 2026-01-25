@@ -10,7 +10,6 @@ public class PriceDiscount implements Discount {
 
     private static final String RULE_TEMPLATE = "满{}减{}";
 
-
     @Override
     public boolean canUse(int totalAmount, Coupon coupon) {
         return totalAmount >= coupon.getThresholdAmount();
