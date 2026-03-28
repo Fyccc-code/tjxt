@@ -67,7 +67,6 @@ public class LearningRecordDelayTaskHandler {
                     // 不一致，说明用户还在持续提交播放进度，放弃旧数据
                     continue;
                 }
-
                 // 4.一致，持久化播放进度数据到数据库
                 // 4.1.更新学习记录的moment
                 record.setFinished(null);
@@ -103,7 +102,6 @@ public class LearningRecordDelayTaskHandler {
             redisTemplate.expire(key, Duration.ofMinutes(1));
         } catch (Exception e) {
             log.error("更新学习记录缓存异常", e);
-            //Long user = UserContext.getUser();
         }
     }
 

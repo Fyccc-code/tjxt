@@ -22,12 +22,12 @@ public class MvcConfig implements WebMvcConfigurer {
      * <h1>通用的ControllerAdvice异常处理器</h1>
      */
     @Bean
-    public CommonExceptionAdvice commonExceptionAdvice(){
+    public CommonExceptionAdvice commonExceptionAdvice() {
         return new CommonExceptionAdvice();
     }
 
     @Bean
-    public RequestIdFilter requestIdFilter(){
+    public RequestIdFilter requestIdFilter() {
         return new RequestIdFilter();
     }
 
@@ -35,12 +35,12 @@ public class MvcConfig implements WebMvcConfigurer {
     @ConditionalOnMissingClass("org.springframework.cloud.gateway.filter.GlobalFilter")
     public WrapperResponseMessageConverter wrapperResponseMessageConverter(
             MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter
-    ){
+    ) {
         return new WrapperResponseMessageConverter(mappingJackson2HttpMessageConverter);
     }
 
     @Bean
-    public WrapperResponseBodyAdvice wrapperResponseBodyAdvice(){
+    public WrapperResponseBodyAdvice wrapperResponseBodyAdvice() {
         return new WrapperResponseBodyAdvice();
     }
 }

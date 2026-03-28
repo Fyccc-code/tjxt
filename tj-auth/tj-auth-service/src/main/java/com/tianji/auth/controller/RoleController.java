@@ -30,7 +30,7 @@ public class RoleController {
 
     @ApiOperation("查询员工角色列表")
     @GetMapping("/list")
-    public List<RoleDTO> listAllRoles(){
+    public List<RoleDTO> listAllRoles() {
         // 1.查询
         List<Role> list = roleService.list();
         if (CollectionUtil.isEmpty(list)) {
@@ -42,7 +42,7 @@ public class RoleController {
 
     @ApiOperation("查询员工角色列表")
     @GetMapping
-    public List<RoleDTO> listStaffRoles(){
+    public List<RoleDTO> listStaffRoles() {
         // 1.查询
         List<Role> list = roleService.lambdaQuery().eq(Role::getType, Role.RoleType.CUSTOM).list();
         if (CollectionUtil.isEmpty(list)) {
@@ -54,7 +54,7 @@ public class RoleController {
 
     @ApiOperation("根据id查询角色")
     @GetMapping("/{id}")
-    public RoleDTO queryRoleById(@PathVariable("id") Long id){
+    public RoleDTO queryRoleById(@PathVariable("id") Long id) {
         // 1.查询
         Role role = roleService.getById(id);
         if (role == null) {
@@ -63,7 +63,6 @@ public class RoleController {
         // 2.数据转换
         return role.toDTO();
     }
-
 
 
     @ApiOperation("新增角色")

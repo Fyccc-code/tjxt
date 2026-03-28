@@ -114,9 +114,12 @@ public class DiscountServiceImpl implements IDiscountService {
         return calculateSolutionDiscount(availableCouponMap, orderCouponDTO.getCourseList(), coupons);
     }
 
+    //筛选最优解
     private List<CouponDiscountDTO> findBestSolution(List<CouponDiscountDTO> list) {
         // 1.准备Map记录最优解
+        // 第一个Map用来记录用券相同时，优惠金额最高的方案 券
         Map<String, CouponDiscountDTO> moreDiscountMap = new HashMap<>();
+        // 第二个Map用来记录优惠金额相同时，用券最少的方案 优惠金额
         Map<Integer, CouponDiscountDTO> lessCouponMap = new HashMap<>();
         // 2.遍历，筛选最优解
         for (CouponDiscountDTO solution : list) {
