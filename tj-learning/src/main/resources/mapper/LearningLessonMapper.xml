@@ -6,6 +6,7 @@
         SELECT SUM(week_freq)
         FROM learning_lesson
         WHERE user_id = #{userId}
-        AND plan_status = 1 AND status IN (0, 1)
+          AND plan_status = 1
+          AND status In (0, 1)
     </select>
 </mapper>

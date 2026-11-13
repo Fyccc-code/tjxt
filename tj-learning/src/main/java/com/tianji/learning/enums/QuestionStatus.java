@@ -22,7 +22,7 @@ public enum QuestionStatus implements BaseEnum {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static QuestionStatus of(Integer value){
+    public static QuestionStatus of(Integer value) {
         if (value == null) {
             return null;
         }

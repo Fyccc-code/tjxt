@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
  * 兑换码
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

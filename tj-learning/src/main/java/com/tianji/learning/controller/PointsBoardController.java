@@ -1,5 +1,6 @@
 package com.tianji.learning.controller;
 
+
 import com.tianji.common.utils.BeanUtils;
 import com.tianji.common.utils.CollUtils;
 import com.tianji.learning.domain.po.PointsBoardSeason;
@@ -20,15 +21,16 @@ import java.util.List;
 
 /**
  * <p>
- * 学霸天梯榜 控制器
+ * 学霸天梯榜 前端控制器
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-02
  */
 @RestController
 @RequiredArgsConstructor
+@Api("积分相关接口")
 @RequestMapping("/boards")
-@Api(tags = "积分相关接口")
 public class PointsBoardController {
 
     private final IPointsBoardService pointsBoardService;
@@ -37,18 +39,18 @@ public class PointsBoardController {
 
     @GetMapping
     @ApiOperation("分页查询指定赛季的积分排行榜")
-    public PointsBoardVO queryPointsBoardBySeason(PointsBoardQuery query){
+    public PointsBoardVO queryPointsBoardBySeason(PointsBoardQuery query) {
         return pointsBoardService.queryPointsBoardBySeason(query);
     }
 
     @ApiOperation("查询赛季信息列表")
     @GetMapping("/seasons/list")
-    public List<PointsBoardSeasonVO> queryPointsBoardSeasons(){
+    public List<PointsBoardSeasonVO> queryPointsBoardSeasons() {
         // 1.获取时间
         LocalDateTime now = LocalDateTime.now();
 
         // 2.查询赛季列表，必须是当前赛季之前的（开始时间小于等于当前时间）
-        List<PointsBoardSeason> list =  seasonService.lambdaQuery()
+        List<PointsBoardSeason> list = seasonService.lambdaQuery()
                 .le(PointsBoardSeason::getBeginTime, now).list();
         if (CollUtils.isEmpty(list)) {
             return CollUtils.emptyList();
@@ -56,4 +58,5 @@ public class PointsBoardController {
         // 3.返回VO
         return BeanUtils.copyToList(list, PointsBoardSeasonVO.class);
     }
+
 }

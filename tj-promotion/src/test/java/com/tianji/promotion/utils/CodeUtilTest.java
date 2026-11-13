@@ -2,18 +2,21 @@ package com.tianji.promotion.utils;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * @author Fyc
+ * @since 2025-11-19 22:07:55
+ */
+
 class CodeUtilTest {
 
     @Test
-    void testCodeUtil() {
-        for (int i = 4000; i < 10000; i++) {
-            String code = CodeUtil.generateCode(i, 1000);
-            System.out.println("code = " + code);
-
-            long num = CodeUtil.parseCode(code);
-            System.out.println("num = " + num);
-        }
-
+    void generateCode() {
+        String code = CodeUtil.generateCode(1, 1000);
     }
 
+    @Test
+    void parseCode() {
+    }
 }

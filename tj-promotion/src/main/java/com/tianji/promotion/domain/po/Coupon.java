@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
  * 优惠券的规则信息
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -54,7 +55,7 @@ public class Coupon implements Serializable {
     /**
      * 是否限定作用范围，false：不限定，true：限定。默认false
      */
-    @TableField("`specific`")
+    @TableField("`specific`") //数据库关键字 加转义字符
     private Boolean specific;
 
     /**

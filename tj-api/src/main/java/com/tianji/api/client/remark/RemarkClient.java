@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
+/**
+ * @author Fyc
+ * @since 2025-11-01 20:44:12
+ */
+
 @FeignClient(value = "remark-service", fallbackFactory = RemarkClientFallback.class)
 public interface RemarkClient {
     @GetMapping("/likes/list")

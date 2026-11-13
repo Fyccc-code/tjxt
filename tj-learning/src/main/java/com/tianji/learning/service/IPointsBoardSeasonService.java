@@ -1,7 +1,7 @@
 package com.tianji.learning.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianji.learning.domain.po.PointsBoardSeason;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
  *  服务类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-02
  */
 public interface IPointsBoardSeasonService extends IService<PointsBoardSeason> {
 

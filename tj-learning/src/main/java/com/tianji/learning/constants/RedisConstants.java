@@ -1,5 +1,10 @@
 package com.tianji.learning.constants;
 
+/**
+ * @author Fyc
+ * @since 2025-11-02 19:37:19
+ */
+
 public interface RedisConstants {
     /**
      * 签到记录的Key的前缀：sign:uid:110:202301

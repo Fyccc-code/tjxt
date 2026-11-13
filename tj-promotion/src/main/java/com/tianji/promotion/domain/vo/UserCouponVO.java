@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @ApiModel(description = "用户优惠券")
-public class UserCouponVO{
+public class UserCouponVO {
 
     @ApiModelProperty("优惠券id")
     private Long id;

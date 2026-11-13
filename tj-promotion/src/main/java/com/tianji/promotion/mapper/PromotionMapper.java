@@ -1,7 +1,7 @@
 package com.tianji.promotion.mapper;
 
-import com.tianji.promotion.domain.po.Promotion;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tianji.promotion.domain.po.Promotion;
 
 /**
  * <p>

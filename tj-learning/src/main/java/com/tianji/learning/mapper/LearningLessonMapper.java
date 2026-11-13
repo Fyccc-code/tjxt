@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.Param;
  * 学生课程表 Mapper 接口
  * </p>
  *
- * @author 虎哥
- * @since 2022-12-02
+ * @author Fyc
+ * @since 2025-10-23
  */
 public interface LearningLessonMapper extends BaseMapper<LearningLesson> {
 

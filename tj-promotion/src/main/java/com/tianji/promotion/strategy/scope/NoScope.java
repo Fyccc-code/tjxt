@@ -5,7 +5,7 @@ import com.tianji.promotion.constants.ScopeType;
 
 import java.util.List;
 
-public class NoScope implements Scope{
+public class NoScope implements Scope {
 
     @Override
     public boolean canUse(OrderCourseDTO course) {

@@ -27,7 +27,7 @@ public enum PointsRecordType implements BaseEnum {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static PointsRecordType of(Integer value){
+    public static PointsRecordType of(Integer value) {
         if (value == null) {
             return null;
         }

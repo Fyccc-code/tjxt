@@ -3,17 +3,24 @@
 <mapper namespace="com.tianji.promotion.mapper.UserCouponMapper">
 
     <select id="queryMyCoupons" resultType="com.tianji.promotion.domain.po.Coupon">
-        SELECT c.id, c.discount_type, c.`specific`, c.discount_value, c.threshold_amount,
-               c.max_discount_amount, uc.id AS creater
+        SELECT c.id,
+               c.discount_type,
+               c.`specific`,
+               c.discount_value,
+               c.threshold_amount,
+               c.max_discount_amount,
+               uc.id AS creater
         FROM user_coupon uc
-            INNER JOIN coupon c ON uc.coupon_id = c.id
-        WHERE uc.user_id = #{userId} AND uc.status = 1
+                 INNER JOIN coupon c ON uc.coupon_id = c.id
+        WHERE uc.user_id = #{userId}
+          AND uc.status = 1
     </select>
+
     <select id="queryCouponByUserCouponIds" resultType="com.tianji.promotion.domain.po.Coupon">
         SELECT c.id, c.discount_type, c.`specific`, c.discount_value, c.threshold_amount,
-               c.max_discount_amount,  uc.id AS creater
+        c.max_discount_amount, uc.id AS creater
         FROM user_coupon uc
-            INNER JOIN coupon c on uc.coupon_id = c.id
+        INNER JOIN coupon c on uc.coupon_id = c.id
         WHERE uc.id IN
         <foreach collection="userCouponIds" separator="," item="id" open="(" close=")">
             #{id}

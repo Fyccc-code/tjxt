@@ -16,7 +16,7 @@ public class SignResultVO {
     private Integer rewardPoints;
 
     @JsonIgnore
-    public int totalPoints(){
+    public int totalPoints() {
         return signPoints + rewardPoints;
     }
 }

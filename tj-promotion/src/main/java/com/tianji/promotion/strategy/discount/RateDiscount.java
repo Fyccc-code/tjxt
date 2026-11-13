@@ -16,13 +16,13 @@ public class RateDiscount implements Discount {
     }
 
     @Override
-    public int calculateDiscount(int totalAmount,  Coupon coupon) {
+    public int calculateDiscount(int totalAmount, Coupon coupon) {
         // 计算折扣，扩大100倍计算，向下取整，单位是分
         return Math.min(coupon.getMaxDiscountAmount(), totalAmount * (100 - coupon.getDiscountValue()) / 100);
     }
 
     @Override
-    public String getRule( Coupon coupon) {
+    public String getRule(Coupon coupon) {
         return StringUtils.format(
                 RULE_TEMPLATE,
                 NumberUtils.scaleToStr(coupon.getThresholdAmount(), 2),

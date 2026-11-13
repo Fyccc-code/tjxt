@@ -2,7 +2,7 @@ package com.tianji.remark.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tianji.api.dto.remark.LikedTimesDTO;
+import com.tianji.api.dto.remark.LikeTimesDTO;
 import com.tianji.common.autoconfigure.mq.RabbitMqHelper;
 import com.tianji.common.utils.StringUtils;
 import com.tianji.common.utils.UserContext;
@@ -24,44 +24,45 @@ import static com.tianji.common.constants.MqConstants.Key.LIKED_TIMES_KEY_TEMPLA
  * 点赞记录表 服务实现类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-29
  */
-// @Service
+//@Service
 @RequiredArgsConstructor
 public class LikedRecordServiceImpl extends ServiceImpl<LikedRecordMapper, LikedRecord> implements ILikedRecordService {
 
     private final RabbitMqHelper mqHelper;
 
     @Override
-    public void addLikeRecord(LikeRecordFormDTO recordDTO) {
-        // 1.基于前端的参数，判断是执行点赞还是取消点赞
+    public void addLikedRecord(LikeRecordFormDTO recordDTO) {
+        //1.基于前端的参数 判断是执行点赞还是取消点赞
         boolean success = recordDTO.getLiked() ? like(recordDTO) : unlike(recordDTO);
-        // 2.判断是否执行成功，如果失败，则直接结束
+        //2.判断是否执行成功 失败的话直接结束
         if (!success) {
             return;
         }
-        // 3.如果执行成功，统计点赞总数
-        Integer likedTimes = lambdaQuery()
+        //3.执行成功 统计点赞总数
+        Integer likeTimes = lambdaQuery()
                 .eq(LikedRecord::getBizId, recordDTO.getBizId())
                 .count();
-        // 4.发送MQ通知
+        //4.发送MQ通知
         mqHelper.send(
                 LIKE_RECORD_EXCHANGE,
                 StringUtils.format(LIKED_TIMES_KEY_TEMPLATE, recordDTO.getBizType()),
-                LikedTimesDTO.of(recordDTO.getBizId(), likedTimes));
+                LikeTimesDTO.of(recordDTO.getBizId(), likeTimes));
     }
 
     @Override
     public Set<Long> isBizLiked(List<Long> bizIds) {
-        // 1.获取登录用户id
+        //1.获取登录用户id
         Long userId = UserContext.getUser();
-        // 2.查询点赞状态
+        //2.查询点赞状态
         List<LikedRecord> list = lambdaQuery()
                 .in(LikedRecord::getBizId, bizIds)
                 .eq(LikedRecord::getUserId, userId)
                 .list();
-        // 3.返回结果
-        return list.stream().map(LikedRecord::getBizId).collect(Collectors.toSet());
+        //3.返回结果
+        return list.stream().map(LikedRecord::getUserId).collect(Collectors.toSet());
     }
 
     @Override
@@ -76,17 +77,17 @@ public class LikedRecordServiceImpl extends ServiceImpl<LikedRecordMapper, Liked
     }
 
     private boolean like(LikeRecordFormDTO recordDTO) {
+        //1.查询点赞记录
         Long userId = UserContext.getUser();
-        // 1.查询点赞记录
         Integer count = lambdaQuery()
                 .eq(LikedRecord::getUserId, userId)
                 .eq(LikedRecord::getBizId, recordDTO.getBizId())
                 .count();
-        // 2.判断是否存在，如果已经存在，直接结束
+        //2.判断是否存在记录 如果已存在直接结束
         if (count > 0) {
             return false;
         }
-        // 3.如果不存在，直接新增
+        //3.不存在则新增
         LikedRecord r = new LikedRecord();
         r.setUserId(userId);
         r.setBizId(recordDTO.getBizId());

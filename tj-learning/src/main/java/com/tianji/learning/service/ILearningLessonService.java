@@ -1,12 +1,15 @@
 package com.tianji.learning.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.common.domain.query.PageQuery;
 import com.tianji.learning.domain.po.LearningLesson;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianji.learning.domain.vo.LearningLessonVO;
 import com.tianji.learning.domain.vo.LearningPlanPageVO;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -14,8 +17,8 @@ import java.util.List;
  * 学生课程表 服务类
  * </p>
  *
- * @author 虎哥
- * @since 2022-12-02
+ * @author Fyc
+ * @since 2025-10-23
  */
 public interface ILearningLessonService extends IService<LearningLesson> {
 
@@ -39,3 +42,4 @@ public interface ILearningLessonService extends IService<LearningLesson> {
 
     LearningPlanPageVO queryMyPlans(PageQuery query);
 }
+

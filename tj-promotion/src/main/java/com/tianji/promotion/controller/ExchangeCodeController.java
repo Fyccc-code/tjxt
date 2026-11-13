@@ -1,5 +1,6 @@
 package com.tianji.promotion.controller;
 
+
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.promotion.domain.query.CodeQuery;
 import com.tianji.promotion.domain.vo.ExchangeCodeVO;
@@ -14,10 +15,11 @@ import javax.validation.Valid;
 
 /**
  * <p>
- * 兑换码 控制器
+ * 兑换码 前端控制器
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +30,8 @@ public class ExchangeCodeController {
 
     @ApiOperation("分页查询兑换码")
     @GetMapping("page")
-    public PageDTO<ExchangeCodeVO> queryCodePage(@Valid CodeQuery query){
+    public PageDTO<ExchangeCodeVO> queryCodePage(@Valid CodeQuery query) {
         return codeService.queryCodePage(query);
     }
+
 }

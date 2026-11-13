@@ -19,19 +19,21 @@ import javax.validation.Valid;
  * 互动提问的问题表 前端控制器
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-26
  */
+
 @RestController
 @RequestMapping("/questions")
-@Api(tags = "互动问答的相关接口")
 @RequiredArgsConstructor
+@Api(tags = "互动问答相关接口")
 public class InteractionQuestionController {
 
     private final IInteractionQuestionService questionService;
 
     @ApiOperation("新增互动问题")
     @PostMapping
-    public void saveQuestion(@Valid @RequestBody QuestionFormDTO questionDTO){
+    public void saveQuestion(@Valid @RequestBody QuestionFormDTO questionDTO) {
         questionService.saveQuestion(questionDTO);
     }
 
@@ -39,27 +41,26 @@ public class InteractionQuestionController {
     @PutMapping("/{id}")
     public void updateQuestion(
             @ApiParam("要修改的问题的id") @PathVariable("id") Long id,
-            @RequestBody QuestionFormDTO questionDTO){
+            @RequestBody QuestionFormDTO questionDTO) {
         questionService.updateQuestion(id, questionDTO);
     }
 
     @ApiOperation("分页查询互动问题")
     @GetMapping("page")
-    public PageDTO<QuestionVO> queryQuestionPage(QuestionPageQuery query){
+    public PageDTO<QuestionVO> queryQuestionPageAdmin(QuestionPageQuery query) {
         return questionService.queryQuestionPage(query);
     }
 
-    @ApiOperation("根据id查询互动问题")
-    @GetMapping("{id}")
-    public QuestionVO queryQuestionById(@PathVariable("id") Long id){
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询问题详情")
+    public QuestionVO queryQuestionById(@PathVariable("id") Long id) {
         return questionService.queryQuestionById(id);
     }
 
     @ApiOperation("根据id删除当前用户问题")
     @DeleteMapping("/{id}")
     public void deleteQuestion(
-            @ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id
-    ){
+            @ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id) {
         questionService.deleteById(id);
     }
 

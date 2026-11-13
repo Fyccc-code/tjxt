@@ -11,20 +11,23 @@ import java.util.Optional;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-02
  */
 @Service
 public class PointsBoardSeasonServiceImpl extends ServiceImpl<PointsBoardSeasonMapper, PointsBoardSeason> implements IPointsBoardSeasonService {
 
     @Override
     public Integer querySeasonByTime(LocalDateTime time) {
+        //查询赛季id
         Optional<PointsBoardSeason> optional = lambdaQuery()
-                .le(PointsBoardSeason::getBeginTime, time)
-                .ge(PointsBoardSeason::getEndTime, time)
+                .le(PointsBoardSeason::getBeginTime, time) //<=
+                .ge(PointsBoardSeason::getEndTime, time) //>=
                 .oneOpt();
+        //返回赛季id
         return optional.map(PointsBoardSeason::getId).orElse(null);
     }
 }

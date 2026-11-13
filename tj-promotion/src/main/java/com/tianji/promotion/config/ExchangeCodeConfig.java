@@ -19,7 +19,7 @@ public class ExchangeCodeConfig {
     private String iv;
 
     @Bean
-    public AESUtil aesUtil(){
+    public AESUtil aesUtil() {
         return new AESUtil(key, iv);
     }
 }

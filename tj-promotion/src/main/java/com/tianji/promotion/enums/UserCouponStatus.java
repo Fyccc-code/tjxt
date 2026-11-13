@@ -18,6 +18,7 @@ public enum UserCouponStatus implements BaseEnum {
     @JsonValue
     private final int value;
     private final String desc;
+
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static UserCouponStatus of(Integer value) {
         if (value == null) {

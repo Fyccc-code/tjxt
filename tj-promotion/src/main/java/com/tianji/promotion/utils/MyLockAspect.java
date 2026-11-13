@@ -8,6 +8,10 @@ import org.redisson.api.RLock;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Fyc
+ * @since 2025/11/22 20:27:50
+ */
 @Component
 @Aspect
 @RequiredArgsConstructor
@@ -18,11 +22,11 @@ public class MyLockAspect implements Ordered {
     @Around("@annotation(myLock)")
     public Object tryLock(ProceedingJoinPoint pjp, MyLock myLock) throws Throwable {
         // 1.创建锁对象
-        RLock lock = lockFactory.getLock(myLock.lockType(), myLock.name());
-        // 2.尝试获取锁
-        boolean isLock = myLock.lockStrategy().tryLock(lock, myLock);
+        RLock lock = lockFactory.getLock(myLock.type(), myLock.name());
+        // 2.尝试获取锁 不同的策略
+        boolean isLock = myLock.strategy().tryLock(lock, myLock);
         // 3.判断是否成功
-        if(!isLock) {
+        if (!isLock) {
             // 3.1.失败，快速结束
             return null;
         }
@@ -37,6 +41,7 @@ public class MyLockAspect implements Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        //return 0;
+        return Ordered.LOWEST_PRECEDENCE;
     }
 }

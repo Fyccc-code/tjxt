@@ -12,6 +12,11 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Fyc
+ * @since 2025-11-02 19:55:32
+ */
+
 @Component
 @RequiredArgsConstructor
 public class LearningPointsListener {
@@ -23,16 +28,16 @@ public class LearningPointsListener {
             exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.WRITE_REPLY
     ))
-    public void listenWriteReplyMessage(Long userId){
+    public void listenWriteReplyMessage(Long userId) {
         recordService.addPointsRecord(userId, 5, PointsRecordType.QA);
     }
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(name = "sign.points.queue", durable = "true"),
-            exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
+            value = @Queue(name = "qa.points.queue", durable = "true"),
+            exchange = @Exchange(value = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.SIGN_IN
     ))
-    public void listenSignInMessage(SignInMessage message){
+    public void listenSignInMessage(SignInMessage message) {
         recordService.addPointsRecord(message.getUserId(), message.getPoints(), PointsRecordType.SIGN);
     }
 
@@ -41,7 +46,7 @@ public class LearningPointsListener {
             exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.LEARN_SECTION
     ))
-    public void listenLearnSectionMessage(Long userId){
+    public void listenLearnSectionMessage(Long userId) {
         recordService.addPointsRecord(userId, 10, PointsRecordType.LEARNING);
     }
 
@@ -50,7 +55,7 @@ public class LearningPointsListener {
             exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.WRITE_NOTE
     ))
-    public void listenWriteNodeMessage(Long userId){
+    public void listenWriteNodeMessage(Long userId) {
         recordService.addPointsRecord(userId, 3, PointsRecordType.NOTE);
     }
 
@@ -59,7 +64,8 @@ public class LearningPointsListener {
             exchange = @Exchange(name = MqConstants.Exchange.LEARNING_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.NOTE_GATHERED
     ))
-    public void listenNodeGatheredMessage(Long userId){
+    public void listenNodeGatheredMessage(Long userId) {
         recordService.addPointsRecord(userId, 2, PointsRecordType.NOTE);
     }
+
 }

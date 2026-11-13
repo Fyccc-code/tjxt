@@ -8,7 +8,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 点赞记录表 Mapper 接口
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-29
  */
 public interface LikedRecordMapper extends BaseMapper<LikedRecord> {
 

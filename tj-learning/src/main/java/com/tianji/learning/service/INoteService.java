@@ -1,9 +1,9 @@
 package com.tianji.learning.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.learning.domain.dto.NoteFormDTO;
 import com.tianji.learning.domain.po.Note;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.tianji.learning.domain.query.NoteAdminPageQuery;
 import com.tianji.learning.domain.query.NotePageQuery;
 import com.tianji.learning.domain.vo.NoteAdminDetailVO;
@@ -12,7 +12,7 @@ import com.tianji.learning.domain.vo.NoteVO;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 虎哥

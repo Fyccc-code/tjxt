@@ -6,7 +6,6 @@ import com.tianji.learning.domain.dto.ReplyDTO;
 import com.tianji.learning.domain.query.ReplyPageQuery;
 import com.tianji.learning.domain.vo.ReplyVO;
 import com.tianji.learning.service.IInteractionReplyService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
  * 互动问题的回答或评论 前端控制器
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-26
  */
 @RestController
-@RequestMapping("/replies")
 @RequiredArgsConstructor
-@Api(tags = "互动问答相关接口 ")
+@RequestMapping("/replies")
 public class InteractionReplyController {
 
     private final IInteractionReplyService replyService;
@@ -34,7 +33,7 @@ public class InteractionReplyController {
 
     @ApiOperation("分页查询回答或评论")
     @GetMapping("page")
-    public PageDTO<ReplyVO> queryReplyPage(ReplyPageQuery pageQuery){
+    public PageDTO<ReplyVO> queryReplyPage(ReplyPageQuery pageQuery) {
         return replyService.queryReplyPage(pageQuery, false);
     }
 }

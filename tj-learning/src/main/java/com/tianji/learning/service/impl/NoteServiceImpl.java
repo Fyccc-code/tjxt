@@ -161,11 +161,11 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note> implements IN
         Page<Note> notePage = new Page<>(query.getPageNo(), query.getPageSize());
         // 2.课程名称
         List<Long> courseIdList = null;
-        if(StringUtils.isNotEmpty(query.getName())){
+        if (StringUtils.isNotEmpty(query.getName())) {
             // 2.1.查询课程信息
             courseIdList = searchClient.queryCoursesIdByName(query.getName());
             // 2.2.判空
-            if(CollUtils.isEmpty(courseIdList)){
+            if (CollUtils.isEmpty(courseIdList)) {
                 return PageDTO.empty(notePage);
             }
 
@@ -329,7 +329,7 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note> implements IN
         for (Note r : records) {
             NoteVO v = BeanUtils.toBean(r, NoteVO.class);
             UserDTO author = sMap.get(r.getAuthorId());
-            if(author != null) {
+            if (author != null) {
                 v.setAuthorId(author.getId());
                 v.setAuthorName(author.getName());
                 v.setAuthorIcon(author.getIcon());

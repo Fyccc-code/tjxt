@@ -6,7 +6,7 @@ import com.tianji.promotion.domain.po.Coupon;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class NoThresholdDiscount implements Discount{
+public class NoThresholdDiscount implements Discount {
 
     private static final String RULE_TEMPLATE = "无门槛抵{}元";
 

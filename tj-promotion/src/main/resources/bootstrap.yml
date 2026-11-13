@@ -22,9 +22,9 @@ spring:
             refresh: false
           - data-id: shared-feign.yaml # 共享feign配置
             refresh: false
-          - data-id: shared-xxljob.yaml # 共享mq配置
-            refresh: false
           - data-id: shared-mq.yaml # 共享mq配置
+            refresh: false
+          - data-id: shared-xxljob.yaml # 共享xxljob配置
             refresh: false
 tj:
   swagger:
@@ -42,7 +42,9 @@ tj:
   auth:
     resource:
       enable: true # 开启登录拦截的功能
+      exclude-login-paths:
+        - /coupons/list
   mq:
     listener:
       retry:
-        stateless: false # 无状态
+        stateless: false # 状态是否是无状态的，默认是无状态的

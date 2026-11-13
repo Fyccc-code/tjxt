@@ -1,9 +1,9 @@
 package com.tianji.promotion.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tianji.promotion.domain.po.Promotion;
 import com.tianji.promotion.mapper.PromotionMapper;
 import com.tianji.promotion.service.IPromotionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

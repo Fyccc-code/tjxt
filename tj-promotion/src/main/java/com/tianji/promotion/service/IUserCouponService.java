@@ -14,9 +14,11 @@ import java.util.List;
  * 用户领取优惠券的记录，是真正使用的优惠券信息 服务类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-21
  */
 public interface IUserCouponService extends IService<UserCoupon> {
+
     void receiveCoupon(Long couponId);
 
     void checkAndCreateUserCoupon(UserCouponDTO uc);
@@ -30,4 +32,5 @@ public interface IUserCouponService extends IService<UserCoupon> {
     void refundCoupon(List<Long> userCouponIds);
 
     List<String> queryDiscountRules(List<Long> userCouponIds);
+
 }

@@ -28,13 +28,13 @@ public class InteractionQuestionAdminController {
 
     @ApiOperation("管理端分页查询互动问题")
     @GetMapping("page")
-    public PageDTO<QuestionAdminVO> queryQuestionPageAdmin(QuestionAdminPageQuery query){
+    public PageDTO<QuestionAdminVO> queryQuestionPageAdmin(QuestionAdminPageQuery query) {
         return questionService.queryQuestionPageAdmin(query);
     }
 
     @ApiOperation("管理端根据id查询互动问题")
     @GetMapping("{id}")
-    public QuestionAdminVO queryQuestionByIdAdmin(@PathVariable("id") Long id){
+    public QuestionAdminVO queryQuestionByIdAdmin(@PathVariable("id") Long id) {
         return questionService.queryQuestionByIdAdmin(id);
     }
 
@@ -42,8 +42,8 @@ public class InteractionQuestionAdminController {
     @PutMapping("/{id}/hidden/{hidden}")
     public void hiddenQuestion(
             @ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id,
-            @ApiParam(value = "是否隐藏，true/false", example = "true") @PathVariable("hidden") Boolean hidden
-    ){
+            @ApiParam(value = "是否隐藏，true/false", example = "true") @PathVariable("hidden") Boolean hidden) {
         questionService.hiddenQuestion(id, hidden);
     }
+
 }

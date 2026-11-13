@@ -8,7 +8,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 互动提问的问题表 Mapper 接口
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-26
  */
 public interface InteractionQuestionMapper extends BaseMapper<InteractionQuestion> {
 

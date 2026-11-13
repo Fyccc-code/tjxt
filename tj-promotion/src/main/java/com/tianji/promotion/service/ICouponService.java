@@ -17,7 +17,8 @@ import java.util.List;
  * 优惠券的规则信息 服务类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 public interface ICouponService extends IService<Coupon> {
 

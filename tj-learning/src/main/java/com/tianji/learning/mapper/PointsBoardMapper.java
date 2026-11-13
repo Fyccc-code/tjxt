@@ -1,7 +1,7 @@
 package com.tianji.learning.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tianji.learning.domain.po.PointsBoard;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.Param;
  * 学霸天梯榜 Mapper 接口
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-02
  */
 public interface PointsBoardMapper extends BaseMapper<PointsBoard> {
 

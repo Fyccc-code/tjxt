@@ -13,7 +13,8 @@ public class UserCouponDTO {
      */
     private Long couponId;
     /**
-     * 兑换码序列号（id）
+     * 兑换码序列号(id)
      */
     private Integer serialNum;
+
 }

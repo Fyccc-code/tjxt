@@ -20,10 +20,9 @@ public enum SectionType implements BaseEnum {
         this.value = value;
         this.desc = desc;
     }
-
-
+    
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static SectionType of(Integer value){
+    public static SectionType of(Integer value) {
         if (value == null) {
             return null;
         }

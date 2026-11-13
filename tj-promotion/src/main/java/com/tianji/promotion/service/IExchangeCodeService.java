@@ -12,12 +12,14 @@ import com.tianji.promotion.domain.vo.ExchangeCodeVO;
  * 兑换码 服务类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 public interface IExchangeCodeService extends IService<ExchangeCode> {
+
     void asyncGenerateCode(Coupon coupon);
 
-    boolean updateExchangeMark(long serialNum, boolean mark);
+    boolean updateExchangeMark(long serialNum, boolean b);
 
     PageDTO<ExchangeCodeVO> queryCodePage(CodeQuery query);
 

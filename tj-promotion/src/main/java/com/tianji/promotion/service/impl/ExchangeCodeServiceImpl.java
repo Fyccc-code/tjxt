@@ -27,13 +27,15 @@ import static com.tianji.promotion.constants.PromotionConstants.*;
  * 兑换码 服务实现类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-17
  */
 @Service
 public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, ExchangeCode> implements IExchangeCodeService {
 
     private final StringRedisTemplate redisTemplate;
-    private final BoundValueOperations<String, String> serialOps;
+    //不需要指定key了
+    private BoundValueOperations<String, String> serialOps;
 
     public ExchangeCodeServiceImpl(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -43,17 +45,17 @@ public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, Exc
     @Override
     @Async("generateExchangeCodeExecutor")
     public void asyncGenerateCode(Coupon coupon) {
-        // 发放数量
+        //发放数量
         Integer totalNum = coupon.getTotalNum();
-        // 1.获取Redis自增序列号
+        //1.获取Redis自增序列化
         Long result = serialOps.increment(totalNum);
         if (result == null) {
             return;
         }
         int maxSerialNum = result.intValue();
         List<ExchangeCode> list = new ArrayList<>(totalNum);
-        for (int serialNum = maxSerialNum - totalNum + 1; serialNum <= maxSerialNum; serialNum++) {
-            // 2.生成兑换码
+        for (int serialNum = maxSerialNum - totalNum + 1; serialNum < maxSerialNum; serialNum++) {
+            //2.生成兑换码
             String code = CodeUtil.generateCode(serialNum, coupon.getId());
             ExchangeCode e = new ExchangeCode();
             e.setCode(code);
@@ -62,15 +64,16 @@ public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, Exc
             e.setExpiredTime(coupon.getIssueEndTime());
             list.add(e);
         }
-        // 3.保存数据库
+        //3.保存到数据库
         saveBatch(list);
 
-        // 4.写入Redis缓存，member：couponId，score：兑换码的最大序列号
+        //4.写入Redis缓存，member：couponId，score：兑换码的最大序列号
         redisTemplate.opsForZSet().add(COUPON_RANGE_KEY, coupon.getId().toString(), maxSerialNum);
     }
 
     @Override
     public boolean updateExchangeMark(long serialNum, boolean mark) {
+        //性能考虑不用-1 浪费1位没有关系 offset从0开始递增 序列号从1开始递增
         Boolean boo = redisTemplate.opsForValue().setBit(COUPON_CODE_MAP_KEY, serialNum, mark);
         return boo != null && boo;
     }
@@ -85,6 +88,7 @@ public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, Exc
         // 2.返回数据
         return PageDTO.of(page, c -> new ExchangeCodeVO(c.getId(), c.getCode()));
     }
+
 
     @Override
     public Long exchangeTargetId(long serialNum) {

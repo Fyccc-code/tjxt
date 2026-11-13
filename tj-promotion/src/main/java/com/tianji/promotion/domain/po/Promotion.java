@@ -8,14 +8,6 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * <p>
- * 促销活动，形式多种多样，例如：优惠券
- * </p>
- *
- * @author 虎哥
- * @since 2022-09-06
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)

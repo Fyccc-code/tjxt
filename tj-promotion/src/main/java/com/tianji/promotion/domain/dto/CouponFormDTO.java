@@ -32,7 +32,7 @@ public class CouponFormDTO {
 
     @ApiModelProperty("优惠券类型，1：每满减，2：折扣，3：无门槛，4：普通满减")
     @NotNull(message = "优惠券折扣类型不能为空")
-    @EnumValid(enumeration = {1,2,3,4})
+    @EnumValid(enumeration = {1, 2, 3, 4})
     private DiscountType discountType;
 
     @ApiModelProperty("折扣门槛，0代表无门槛")

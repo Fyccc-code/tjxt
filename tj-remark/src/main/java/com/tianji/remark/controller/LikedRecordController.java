@@ -13,10 +13,11 @@ import java.util.Set;
 
 /**
  * <p>
- * 点赞记录表 控制器
+ * 点赞记录表 前端控制器
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-29
  */
 @RestController
 @RequiredArgsConstructor
@@ -28,13 +29,14 @@ public class LikedRecordController {
 
     @PostMapping
     @ApiOperation("点赞或取消点赞")
-    public void addLikeRecord(@Valid @RequestBody LikeRecordFormDTO recordDTO) {
-        likedRecordService.addLikeRecord(recordDTO);
+    public void addLikedRecord(@Valid @RequestBody LikeRecordFormDTO recordDTO) {
+        likedRecordService.addLikedRecord(recordDTO);
     }
 
     @GetMapping("list")
     @ApiOperation("查询指定业务id的点赞状态")
-    public Set<Long> isBizLiked(@RequestParam("bizIds") List<Long> bizIds){
+    public Set<Long> isBizLiked(@RequestParam("bizIds") List<Long> bizIds) {
         return likedRecordService.isBizLiked(bizIds);
     }
+
 }

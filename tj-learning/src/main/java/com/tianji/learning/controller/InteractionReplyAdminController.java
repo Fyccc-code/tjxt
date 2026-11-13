@@ -1,6 +1,5 @@
 package com.tianji.learning.controller;
 
-
 import com.tianji.common.domain.dto.PageDTO;
 import com.tianji.learning.domain.query.ReplyPageQuery;
 import com.tianji.learning.domain.vo.ReplyVO;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
  * 互动提问的问题表 前端控制器
  * </p>
  *
- * @author 虎哥
- * @since 2022-10-21
+ * @author Fyc
+ * @since 2026-01-17 18:06:04
  */
 @Api(tags = "问题管理相关接口")
 @RestController
@@ -32,19 +31,19 @@ public class InteractionReplyAdminController {
     public void hiddenReply(
             @ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id,
             @ApiParam(value = "是否隐藏，true/false", example = "true") @PathVariable("hidden") Boolean hidden
-    ){
+    ) {
         replyService.hiddenReply(id, hidden);
     }
 
     @ApiOperation("分页查询回答或评论")
     @GetMapping("page")
-    public PageDTO<ReplyVO> queryReplyPage(ReplyPageQuery pageQuery){
+    public PageDTO<ReplyVO> queryReplyPage(ReplyPageQuery pageQuery) {
         return replyService.queryReplyPage(pageQuery, true);
     }
 
     @ApiOperation("根据id查询回答或评论")
     @GetMapping("{id}")
-    public ReplyVO queryReplyById(@ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id){
+    public ReplyVO queryReplyById(@ApiParam(value = "问题id", example = "1") @PathVariable("id") Long id) {
         return replyService.queryReplyById(id);
     }
 }

@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
  * 用户领取优惠券的记录，是真正使用的优惠券信息
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-11-21
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

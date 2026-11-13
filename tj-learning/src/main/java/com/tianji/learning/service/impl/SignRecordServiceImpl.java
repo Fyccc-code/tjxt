@@ -1,5 +1,6 @@
 package com.tianji.learning.service.impl;
 
+
 import com.tianji.common.autoconfigure.mq.RabbitMqHelper;
 import com.tianji.common.constants.MqConstants;
 import com.tianji.common.exceptions.BizIllegalException;
@@ -19,35 +20,40 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * @author Fyc
+ * @since 2025-11-02 19:40:53
+ */
+
 @Service
 @RequiredArgsConstructor
 public class SignRecordServiceImpl implements ISignRecordService {
 
     private final StringRedisTemplate redisTemplate;
-
-    private final RabbitMqHelper mqHelper;
+    private final RabbitMqHelper rabbitMqHelper;
 
     @Override
     public SignResultVO addSignRecords() {
-        // 1.签到
-        // 1.1.获取登录用户
+        //1.签到
+        //1.1.获取登录用户id
         Long userId = UserContext.getUser();
-        // 1.2.获取日期
+        //1.2.获取日期
         LocalDate now = LocalDate.now();
-        // 1.3.拼接key
+        //1.3.拼接key
         String key = RedisConstants.SIGN_RECORD_KEY_PREFIX
                 + userId
                 + now.format(DateUtils.SIGN_DATE_SUFFIX_FORMATTER);
-        // 1.4.计算offset
+        //1.4.计算offset
         int offset = now.getDayOfMonth() - 1;
-        // 1.5.保存签到信息
-        Boolean exists = redisTemplate.opsForValue().setBit(key, offset, true);
-        if (BooleanUtils.isTrue(exists)) {
-            throw new BizIllegalException("不允许重复签到！");
+        //1.5.保存到redis true就是设置为1
+        Boolean exits = redisTemplate.opsForValue().setBit(key, offset, true);
+        if (BooleanUtils.isTrue(exits)) {
+            //表示已经签到了
+            throw new BizIllegalException("不允许重复签到");
         }
-        // 2.计算连续签到天数
+        //2.计算连续签到天数
         int signDays = countSignDays(key, now.getDayOfMonth());
-        // 3.计算签到得分
+        //3.计算签到积分
         int rewardPoints = 0;
         switch (signDays) {
             case 7:
@@ -60,66 +66,42 @@ public class SignRecordServiceImpl implements ISignRecordService {
                 rewardPoints = 40;
                 break;
         }
-        // 4.保存积分明细记录
-        mqHelper.send(
+        //4.保存积分明细 mq发送消息进行保存积分
+        rabbitMqHelper.send(
                 MqConstants.Exchange.LEARNING_EXCHANGE,
                 MqConstants.Key.SIGN_IN,
                 SignInMessage.of(userId, rewardPoints + 1));
-        // 5.封装返回
-        SignResultVO vo = new SignResultVO();
-        vo.setSignDays(signDays);
-        vo.setRewardPoints(rewardPoints);
-        return vo;
-    }
-
-    @Override
-    public Byte[] querySignRecords() {
-        // 1.获取登录用户
-        Long userId = UserContext.getUser();
-        // 2.获取日期
-        LocalDate now = LocalDate.now();
-        int dayOfMonth = now.getDayOfMonth();
-        // 3.拼接key
-        String key = RedisConstants.SIGN_RECORD_KEY_PREFIX
-                + userId
-                + now.format(DateUtils.SIGN_DATE_SUFFIX_FORMATTER);
-        // 4.读取
-        List<Long> result = redisTemplate.opsForValue()
-                .bitField(key, BitFieldSubCommands.create().get(
-                        BitFieldSubCommands.BitFieldType.unsigned(dayOfMonth)).valueAt(0));
-        if (CollUtils.isEmpty(result)) {
-            return new Byte[0];
-        }
-        int num = result.get(0).intValue();
-
-        Byte[] arr = new Byte[dayOfMonth];
-        int pos = dayOfMonth - 1;
-        while (pos >= 0){
-            arr[pos--] = (byte)(num & 1);
-            // 把数字右移一位，抛弃最后一个bit位，继续下一个bit位
-            num >>>= 1;
-        }
-        return arr;
+        //5.封装结果返回
+        SignResultVO signResultVO = new SignResultVO();
+        signResultVO.setSignDays(signDays);
+        signResultVO.setRewardPoints(rewardPoints);
+        return signResultVO;
     }
 
     private int countSignDays(String key, int len) {
-        // 1.获取本月从第一天开始，到今天为止的所有签到记录
+        //1.获取本月从第一天开始到今天为止所有的所有的签到记录，得到的这个值是位的二进制对应的那个无符号十进制整数
         List<Long> result = redisTemplate.opsForValue()
                 .bitField(key, BitFieldSubCommands.create().get(
                         BitFieldSubCommands.BitFieldType.unsigned(len)).valueAt(0));
         if (CollUtils.isEmpty(result)) {
             return 0;
         }
+        //避免拆箱装箱  list里面就一个值
         int num = result.get(0).intValue();
-        // 2.定义一个计数器
+        //2.定义计数器
         int count = 0;
-        // 3.循环，与1做与运算，得到最后一个bit，判断是否为0，为0则终止，为1则继续
+        //3.循环 与1做与运算 得到最后一个bit 判断是否为0 为0终止 为1则继续
         while ((num & 1) == 1) {
-            // 4.计数器+1
+            //4.计数器加1
             count++;
-            // 5.把数字右移一位，最后一位被舍弃，倒数第二位成了最后一位
+            //5.数字右移一位  001111->000111
             num >>>= 1;
         }
         return count;
+    }
+
+    @Override
+    public Byte[] querySignRecords() {
+        return new Byte[0];
     }
 }

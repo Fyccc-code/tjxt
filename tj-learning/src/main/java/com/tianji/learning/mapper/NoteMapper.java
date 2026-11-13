@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author 虎哥
@@ -22,9 +22,9 @@ public interface NoteMapper extends BaseMapper<Note> {
             Page<Note> p,
             @Param("userId") Long userId,
             @Param("courseId") Long courseId,
-            @Param("sectionId")Long sectionId);
+            @Param("sectionId") Long sectionId);
 
-    Page<Note> queryNotePage(Page<Note> notePage, @Param("ew")  QueryWrapper<Note> wrapper);
+    Page<Note> queryNotePage(Page<Note> notePage, @Param("ew") QueryWrapper<Note> wrapper);
 
     @Select("SELECT user_id FROM note WHERE gathered_note_id = #{id}")
     Set<Long> queryNoteGathers(Long id);

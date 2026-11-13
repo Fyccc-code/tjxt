@@ -1,5 +1,6 @@
 package com.tianji.learning.mq;
 
+
 import com.tianji.api.dto.trade.OrderBasicDTO;
 import com.tianji.common.constants.MqConstants;
 import com.tianji.common.utils.CollUtils;
@@ -13,6 +14,10 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Fyc
+ * @since 2025-10-23 15:20:42
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -22,18 +27,18 @@ public class LessonChangeListener {
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "learning.lesson.pay.queue", durable = "true"),
-            exchange = @Exchange(name = MqConstants.Exchange.ORDER_EXCHANGE, type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(value = MqConstants.Exchange.ORDER_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.ORDER_PAY_KEY
     ))
-    public void listenLessonPay(OrderBasicDTO order){
-        // 1.健壮性处理
-        if(order == null || order.getUserId() == null || CollUtils.isEmpty(order.getCourseIds())){
-            // 数据有误，无需处理
-            log.error("接收到MQ消息有误，订单数据为空");
+    public void listenLessonPay(OrderBasicDTO order) {
+        //1.判断是否为空
+        if (order == null || order.getUserId() == null || CollUtils.isEmpty(order.getCourseIds())) {
+            //数据有误，无需处理
+            log.error("接收到mq消息有误，订单数据为空");
             return;
         }
-        // 2.添加课程
-        log.debug("监听到用户{}的订单{}，需要添加课程{}到课表中", order.getUserId(), order.getOrderId(), order.getCourseIds());
+        //2.添加课程
+        log.debug("监听到用户{}的订单{},需要添加{}到课表中", order.getUserId(), order.getOrderId(), order.getCourseIds());
         lessonService.addUserLessons(order.getUserId(), order.getCourseIds());
     }
 
@@ -42,9 +47,9 @@ public class LessonChangeListener {
             exchange = @Exchange(name = MqConstants.Exchange.ORDER_EXCHANGE, type = ExchangeTypes.TOPIC),
             key = MqConstants.Key.ORDER_REFUND_KEY
     ))
-    public void listenLessonRefund(OrderBasicDTO order){
+    public void listenLessonRefund(OrderBasicDTO order) {
         // 1.健壮性处理
-        if(order == null || order.getUserId() == null || CollUtils.isEmpty(order.getCourseIds())){
+        if (order == null || order.getUserId() == null || CollUtils.isEmpty(order.getCourseIds())) {
             // 数据有误，无需处理
             log.error("接收到MQ消息有误，订单数据为空");
             return;

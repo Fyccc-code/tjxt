@@ -16,13 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ScopeType implements BaseEnum {
-    ALL(0, "全部"){
+    ALL(0, "全部") {
         @Override
         public Scope buildScope(List<Long> scopeIds) {
             return new NoScope();
         }
     },
-    CATEGORY(1, "指定分类"){
+    CATEGORY(1, "指定分类") {
         @Override
         public Scope buildScope(List<Long> scopeIds) {
             return new CategoryScope(scopeIds);

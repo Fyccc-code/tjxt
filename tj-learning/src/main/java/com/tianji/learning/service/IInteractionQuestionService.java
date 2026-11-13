@@ -9,12 +9,14 @@ import com.tianji.learning.domain.query.QuestionPageQuery;
 import com.tianji.learning.domain.vo.QuestionAdminVO;
 import com.tianji.learning.domain.vo.QuestionVO;
 
+
 /**
  * <p>
  * 互动提问的问题表 服务类
  * </p>
  *
- * @author 虎哥
+ * @author Fyc
+ * @since 2025-10-26
  */
 public interface IInteractionQuestionService extends IService<InteractionQuestion> {
 

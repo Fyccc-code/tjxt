@@ -21,6 +21,11 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.DelayQueue;
 
+/**
+ * @author Fyc
+ * @since 2025-10-23
+ */
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -31,19 +36,22 @@ public class LearningRecordDelayTaskHandler {
     private final ILearningLessonService lessonService;
     private final DelayQueue<DelayTask<RecordTaskData>> queue = new DelayQueue<>();
     private final static String RECORD_KEY_TEMPLATE = "learning:record:{}";
+    //volatile 防止已修改了其他线程不可见的情况
     private static volatile boolean begin = true;
 
     @PostConstruct
-    public void init(){
+    public void init() {
+        //单线程方案
         CompletableFuture.runAsync(this::handleDelayTask);
     }
+
     @PreDestroy
-    public void destroy(){
+    public void destroy() {
         begin = false;
         log.debug("延迟任务停止执行！");
     }
 
-    public void handleDelayTask(){
+    public void handleDelayTask() {
         while (begin) {
             try {
                 // 1.获取到期的延迟任务
@@ -55,11 +63,10 @@ public class LearningRecordDelayTaskHandler {
                     continue;
                 }
                 // 3.比较数据，moment值
-                if(!Objects.equals(data.getMoment(), record.getMoment())) {
+                if (!Objects.equals(data.getMoment(), record.getMoment())) {
                     // 不一致，说明用户还在持续提交播放进度，放弃旧数据
                     continue;
                 }
-
                 // 4.一致，持久化播放进度数据到数据库
                 // 4.1.更新学习记录的moment
                 record.setFinished(null);
@@ -76,7 +83,7 @@ public class LearningRecordDelayTaskHandler {
         }
     }
 
-    public void addLearningRecordTask(LearningRecord record){
+    public void addLearningRecordTask(LearningRecord record) {
         // 1.添加数据到Redis缓存
         writeRecordCache(record);
         // 2.提交延迟任务到延迟队列 DelayQueue
@@ -98,23 +105,24 @@ public class LearningRecordDelayTaskHandler {
         }
     }
 
-    public LearningRecord readRecordCache(Long lessonId, Long sectionId){
+    public LearningRecord readRecordCache(Long lessonId, Long sectionId) {
         try {
             // 1.读取Redis数据
             String key = StringUtils.format(RECORD_KEY_TEMPLATE, lessonId);
             Object cacheData = redisTemplate.opsForHash().get(key, sectionId.toString());
-            if (cacheData == null) {
+            /*if (cacheData == null) {
                 return null;
             }
             // 2.数据检查和转换
-            return JsonUtils.toBean(cacheData.toString(), LearningRecord.class);
+            return JsonUtils.toBean(cacheData.toString(), LearningRecord.class);*/
+            return cacheData == null ? null : JsonUtils.toBean(cacheData.toString(), LearningRecord.class);
         } catch (Exception e) {
             log.error("缓存读取异常", e);
             return null;
         }
     }
 
-    public void cleanRecordCache(Long lessonId, Long sectionId){
+    public void cleanRecordCache(Long lessonId, Long sectionId) {
         // 删除数据
         String key = StringUtils.format(RECORD_KEY_TEMPLATE, lessonId);
         redisTemplate.opsForHash().delete(key, sectionId.toString());
@@ -122,7 +130,7 @@ public class LearningRecordDelayTaskHandler {
 
     @Data
     @NoArgsConstructor
-    private static class RecordCacheData{
+    private static class RecordCacheData {
         private Long id;
         private Integer moment;
         private Boolean finished;
@@ -133,9 +141,10 @@ public class LearningRecordDelayTaskHandler {
             this.finished = record.getFinished();
         }
     }
+
     @Data
     @NoArgsConstructor
-    private static class RecordTaskData{
+    private static class RecordTaskData {
         private Long lessonId;
         private Long sectionId;
         private Integer moment;

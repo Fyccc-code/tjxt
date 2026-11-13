@@ -11,10 +11,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * @author Fyc
+ * @since 2025-10-29 14:41:00
+ */
 @Slf4j
 @EnableScheduling
-@SpringBootApplication
 @MapperScan("com.tianji.remark.mapper")
+@SpringBootApplication
 public class RemarkApplication {
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplicationBuilder(RemarkApplication.class).build(args);

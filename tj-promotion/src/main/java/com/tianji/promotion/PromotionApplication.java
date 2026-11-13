@@ -1,6 +1,5 @@
 package com.tianji.promotion;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -13,11 +12,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@EnableAspectJAutoProxy(exposeProxy = true)
-@EnableAsync
+/**
+ * @author Fyc
+ * @since 2025/11/17 22:34:36
+ */
+@EnableAsync//开启异步 aop动态代理变成异步
 @SpringBootApplication
 @MapperScan("com.tianji.promotion.mapper")
 @Slf4j
+@EnableAspectJAutoProxy(exposeProxy = true)
 public class PromotionApplication {
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplicationBuilder(PromotionApplication.class).build(args);

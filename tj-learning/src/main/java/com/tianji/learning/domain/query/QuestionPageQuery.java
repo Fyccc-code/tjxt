@@ -16,5 +16,5 @@ public class QuestionPageQuery extends PageQuery {
     @ApiModelProperty(value = "小节id", example = "1")
     private Long sectionId;
     @ApiModelProperty(value = "是否只查询我的问题", example = "1")
-    private Boolean onlyMine = false;
+    private Boolean onlyMine;
 }
