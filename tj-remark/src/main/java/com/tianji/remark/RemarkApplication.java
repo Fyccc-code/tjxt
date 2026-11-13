@@ -1,6 +1,5 @@
 package com.tianji.remark;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +15,6 @@ import java.net.UnknownHostException;
  * @author Fyc
  * @since 2025-10-29 14:41:00
  */
-
 @Slf4j
 @EnableScheduling
 @MapperScan("com.tianji.remark.mapper")

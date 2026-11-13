@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import static com.tianji.common.constants.MqConstants.Exchange.LIKE_RECORD_EXCHANGE;
 import static com.tianji.common.constants.MqConstants.Key.LIKED_TIMES_KEY_TEMPLATE;
 
-
 /**
  * <p>
  * 点赞记录表 服务实现类

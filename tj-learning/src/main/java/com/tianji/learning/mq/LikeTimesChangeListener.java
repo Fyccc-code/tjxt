@@ -1,6 +1,5 @@
 package com.tianji.learning.mq;
 
-
 import com.tianji.api.dto.remark.LikeTimesDTO;
 import com.tianji.learning.domain.po.InteractionReply;
 import com.tianji.learning.service.IInteractionReplyService;
@@ -23,7 +22,6 @@ import static com.tianji.common.constants.MqConstants.Key.QA_LIKED_TIMES_KEY;
  * @author Fyc
  * @since 2025-11-01 20:55:25
  */
-
 @Slf4j
 @Component
 @RequiredArgsConstructor

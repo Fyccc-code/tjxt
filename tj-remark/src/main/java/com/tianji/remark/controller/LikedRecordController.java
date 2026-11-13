@@ -1,6 +1,5 @@
 package com.tianji.remark.controller;
 
-
 import com.tianji.remark.domain.dto.LikeRecordFormDTO;
 import com.tianji.remark.service.ILikedRecordService;
 import io.swagger.annotations.Api;
@@ -36,7 +35,7 @@ public class LikedRecordController {
 
     @GetMapping("list")
     @ApiOperation("查询指定业务id的点赞状态")
-    public Set<Long> isBizLiked(@RequestParam("bizIds")List<Long> bizIds) {
+    public Set<Long> isBizLiked(@RequestParam("bizIds") List<Long> bizIds) {
         return likedRecordService.isBizLiked(bizIds);
     }
 

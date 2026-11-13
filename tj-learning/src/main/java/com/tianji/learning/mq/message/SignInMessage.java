@@ -1,6 +1,5 @@
 package com.tianji.learning.mq.message;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
  * @author Fyc
  * @since 2025-11-02 20:05:03
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
