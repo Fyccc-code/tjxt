@@ -17,7 +17,7 @@ import com.tianji.learning.enums.SectionType;
 import com.tianji.learning.mapper.LearningRecordMapper;
 import com.tianji.learning.service.ILearningLessonService;
 import com.tianji.learning.service.ILearningRecordService;
-import com.tianji.learning.utils.LearningRecordDelayTaskHandler;
+import com.tianji.learning.utils.LearningRecordTaskHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,7 @@ public class LearningRecordServiceImpl extends ServiceImpl<LearningRecordMapper,
 
     private final CourseClient courseClient;
 
-    private final LearningRecordDelayTaskHandler taskHandler;
+    private final LearningRecordTaskHandler taskHandler;
 
     @Override
     public LearningLessonDTO queryLearningRecordByCourse(Long courseId) {

@@ -22,6 +22,9 @@ public interface MqConstants {
         /*交易服务延迟任务交换机*/
         String TRADE_DELAY_EXCHANGE = "trade.delay.topic";
 
+        /*学习服务延迟任务交换机*/
+        String LEARNING_DELAY_EXCHANGE = "learning.delay.topic";
+
         /*点赞记录有关的交换机*/
         String LIKE_RECORD_EXCHANGE = "like.record.topic";
 
@@ -76,6 +79,9 @@ public interface MqConstants {
         String REFUND_CHANGE = "refund.status.change";
 
         String ORDER_DELAY_KEY = "delay.order.query";
+
+        /*学习记录延迟任务RoutingKey*/
+        String RECORD_DELAY_KEY = "delay.record.update";
 
         /*领取优惠券的key*/
         String COUPON_RECEIVE = "coupon.receive";

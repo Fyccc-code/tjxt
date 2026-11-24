@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +26,11 @@ import java.util.concurrent.DelayQueue;
  * @author Fyc
  * @since 2025-10-23
  */
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LearningRecordDelayTaskHandler {
+@ConditionalOnProperty(name = "tianji.learning.record-delay-type", havingValue = "delayqueue", matchIfMissing = true)
+public class LearningRecordDelayTaskHandler implements LearningRecordTaskHandler {
 
     private final StringRedisTemplate redisTemplate;
     private final LearningRecordMapper recordMapper;
